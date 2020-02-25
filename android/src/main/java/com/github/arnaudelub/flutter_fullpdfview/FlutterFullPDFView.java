@@ -21,10 +21,11 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
   private final MethodChannel methodChannel;
 
   @SuppressWarnings("unchecked")
-  FlutterFullPDFView(Context context, BinaryMessenger messenger, int id, Map<String, Object> params) {
+  FlutterFullPDFView(
+      Context context, BinaryMessenger messenger, int id, Map<String, Object> params) {
     pdfView = new PDFView(context, null);
 
-    methodChannel = new MethodChannel(messenger, "arnaudelub.github.com/pdfview_" + id);
+    methodChannel = new MethodChannel(messenger, "plugins.arnaudelub.io/pdfview_" + id);
     methodChannel.setMethodCallHandler(this);
 
     if (params.containsKey("filePath")) {
@@ -84,7 +85,7 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
                 }
               })
           .enableDoubletap(true)
-          .defaultPage(0)
+          .defaultPage(getInt(params, "defaultPage"))
           .load();
     }
   }
@@ -148,7 +149,7 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
           pdfView.setPageSnap(getBoolean(settings, key));
           break;
         case "fitEachPage":
-         pdfView.setFitEachPage(getBoolean(settings, key)); 
+          pdfView.setFitEachPage(getBoolean(settings, key));
         default:
           throw new IllegalArgumentException("Unknown PDFView setting: " + key);
       }
@@ -167,4 +168,8 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
   String getString(Map<String, Object> params, String key) {
     return params.containsKey(key) ? (String) params.get(key) : "";
   }
+  int getInt(Map<String, Object> params, String key) {
+        return params.containsKey(key) ? (int) params.get(key): 0;
+    }
+
 }

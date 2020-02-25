@@ -8,6 +8,6 @@ public class FlutterFullpdfviewPlugin {
         registrar
                 .platformViewRegistry()
                 .registerViewFactory(
-                        "arnaudelub.github.com/pdfview", new FULLPDFViewFactory(registrar.messenger()));
+                        "plugins.arnaudelub.io/pdfview", new FULLPDFViewFactory(registrar.messenger()));
     }
 }

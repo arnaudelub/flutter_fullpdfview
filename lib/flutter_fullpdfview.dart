@@ -29,6 +29,7 @@ class PDFView extends StatefulWidget {
     this.autoSpacing = true,
     this.pageFling = true,
     this.pageSnap = true,
+    this.defaultPage = 0,
   }) : super(key: key);
 
   @override
@@ -62,6 +63,7 @@ class PDFView extends StatefulWidget {
   final bool autoSpacing;
   final bool pageFling;
   final bool pageSnap;
+  final int defaultPage;
 }
 
 class _PDFViewState extends State<PDFView> {
@@ -71,7 +73,7 @@ class _PDFViewState extends State<PDFView> {
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
-        viewType: 'arnaudelub.github.com/pdfview',
+        viewType: 'plugins.arnaudelub.io/pdfview',
         onPlatformViewCreated: _onPlatformViewCreated,
         gestureRecognizers: widget.gestureRecognizers,
         creationParams: _CreationParams.fromWidget(widget).toMap(),
@@ -79,7 +81,7 @@ class _PDFViewState extends State<PDFView> {
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
-        viewType: 'arnaudelub.github.com/pdfview',
+        viewType: 'plugins.arnaudelub.io/pdfview',
         onPlatformViewCreated: _onPlatformViewCreated,
         gestureRecognizers: widget.gestureRecognizers,
         creationParams: _CreationParams.fromWidget(widget).toMap(),
@@ -144,6 +146,7 @@ class _PDFViewSettings {
     this.autoSpacing,
     this.pageFling,
     this.pageSnap,
+    this.defaultPage,
   });
 
   static _PDFViewSettings fromWidget(PDFView widget) {
@@ -156,6 +159,7 @@ class _PDFViewSettings {
       autoSpacing: widget.autoSpacing,
       pageFling: widget.pageFling,
       pageSnap: widget.pageSnap,
+      defaultPage: widget.defaultPage,
     );
   }
 
@@ -167,6 +171,7 @@ class _PDFViewSettings {
   final bool autoSpacing;
   final bool pageFling;
   final bool pageSnap;
+  final int defaultPage;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -178,6 +183,7 @@ class _PDFViewSettings {
       'autoSpacing': autoSpacing,
       'pageFling': pageFling,
       'pageSnap': pageSnap,
+      'defaultPage': defaultPage,
     };
   }
 
@@ -196,6 +202,9 @@ class _PDFViewSettings {
     if (fitEachPage != newSettings.fitEachPage) {
       updates['fitEachPage'] = newSettings.fitEachPage;
     }
+    if (defaultPage != newSettings.defaultPage) {
+      updates['defaultPage'] = newSettings.defaultPage;
+    }
 
     return updates;
   }
@@ -205,7 +214,7 @@ class PDFViewController {
   PDFViewController._(
     int id,
     this._widget,
-  ) : _channel = MethodChannel('arnaudelub.github.com/pdfview_$id') {
+  ) : _channel = MethodChannel('plugins.arnaudelub.io/pdfview_$id') {
     _settings = _PDFViewSettings.fromWidget(_widget);
     _channel.setMethodCallHandler(_onMethodCall);
   }
@@ -220,7 +229,9 @@ class PDFViewController {
     print([call.method, call.arguments]);
     switch (call.method) {
       case 'onRender':
+        print("CASE RENDERING!!!!!!!");
         if (_widget.onRender != null) {
+          print("onRender != null !!!!!!!!!!!!!!");
           _widget.onRender(call.arguments['pages']);
         }
 

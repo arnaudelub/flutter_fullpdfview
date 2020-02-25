@@ -1,0 +1,28 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_fullpdfview (0.0.1):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_fullpdfview (from `.symlinks/plugins/flutter_fullpdfview/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_fullpdfview:
+    :path: ".symlinks/plugins/flutter_fullpdfview/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_fullpdfview: 08748014ed91f80146793f5c5c878241d0d44acd
+  path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
+
+PODFILE CHECKSUM: 4f3feb9edda54f24615668cb94e4d6c8fd84e119
+
+COCOAPODS: 1.8.4
