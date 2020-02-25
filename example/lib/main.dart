@@ -146,11 +146,13 @@ class _PDFScreenState extends State<PDFScreen> {
           PDFView(
             filePath: widget.path,
             fitEachPage: false,
+            dualPageMode: true,
             enableSwipe: true,
             swipeHorizontal: true,
             autoSpacing: false,
             pageFling: false,
             defaultPage: 8,
+            pageSnap: false,
             onRender: (_pages) {
               print("OK RENDERED!!!!!");
               setState(() {

@@ -53,6 +53,7 @@ import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 | filePath           |   ✅    | ✅
 | fitEachPage        |   ✅    | ✅
 | defaultPage        |   ✅    | ✅
+| dualPageMode       |   ✅    | ❌  |
 | enableSwipe        |   ✅    | ✅  |
 | swipeHorizontal    |   ✅    | ✅  |
 | password           |   ✅    |  ✅  |
@@ -76,11 +77,12 @@ import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 PDFView(
   filePath: path,
   enableSwipe: true,
-  fitEachPage: true, // If set to false, pageFling has to be set to false
+  fitEachPage: true, 
   swipeHorizontal: true,
-  autoSpacing: false, //if fitEachPage , in landscape need to set it to true to fit 1 page
+  autoSpacing: false, 
   pageFling: false,
   defaultPage: 8,
+  dualPageMode: orientation == Orientation.landscape
   onRender: (_pages) {
     setState(() {
       pages = _pages;

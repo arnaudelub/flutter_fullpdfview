@@ -2,6 +2,7 @@ package com.github.arnaudelub.flutter_fullpdfview;
 
 import android.content.Context;
 import android.view.View;
+import android.content.res.Configuration;
 import com.github.arnaudelub.pdfviewer.PDFView;
 import com.github.arnaudelub.pdfviewer.listener.*;
 import com.github.arnaudelub.pdfviewer.util.Constants;
@@ -35,15 +36,23 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
 
       Constants.PRELOAD_OFFSET = 3;
 
+      boolean isLandscape;
+      int orientation = context.getResources().getConfiguration().orientation;
+      isLandscape = orientation == Configuration.ORIENTATION_LANDSCAPE;
+      boolean dualMode = getBoolean(params, "dualPageMode");
+
       pdfView
           .fromFile(file)
+          .landscapeOrientation(isLandscape)
+          .enableAnnotationRendering(true)
+          .dualPageMode(getBoolean(params, "dualPageMode"))
           .pageFitPolicy(FitPolicy.BOTH)
           .enableSwipe(getBoolean(params, "enableSwipe"))
-          .fitEachPage(getBoolean(params, "fitEachPage"))
+          .fitEachPage(dualMode ? false : getBoolean(params, "fitEachPage"))
           .swipeHorizontal(getBoolean(params, "swipeHorizontal"))
           .password(getString(params, "password"))
           .nightMode(getBoolean(params, "nightMode"))
-          .autoSpacing(getBoolean(params, "autoSpacing"))
+          .autoSpacing(dualMode ? false : getBoolean(params, "autoSpacing"))
           .pageFling(getBoolean(params, "pageFling"))
           .pageSnap(getBoolean(params, "pageSnap"))
           .onPageChange(
@@ -168,8 +177,8 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
   String getString(Map<String, Object> params, String key) {
     return params.containsKey(key) ? (String) params.get(key) : "";
   }
-  int getInt(Map<String, Object> params, String key) {
-        return params.containsKey(key) ? (int) params.get(key): 0;
-    }
 
+  int getInt(Map<String, Object> params, String key) {
+    return params.containsKey(key) ? (int) params.get(key) : 0;
+  }
 }

@@ -21,6 +21,7 @@ class PDFView extends StatefulWidget {
     this.onError,
     this.onPageError,
     this.gestureRecognizers,
+    this.dualPageMode = false,
     this.fitEachPage = true,
     this.enableSwipe = true,
     this.swipeHorizontal = false,
@@ -64,6 +65,7 @@ class PDFView extends StatefulWidget {
   final bool pageFling;
   final bool pageSnap;
   final int defaultPage;
+  final bool dualPageMode;
 }
 
 class _PDFViewState extends State<PDFView> {
@@ -147,6 +149,7 @@ class _PDFViewSettings {
     this.pageFling,
     this.pageSnap,
     this.defaultPage,
+    this.dualPageMode,
   });
 
   static _PDFViewSettings fromWidget(PDFView widget) {
@@ -160,6 +163,7 @@ class _PDFViewSettings {
       pageFling: widget.pageFling,
       pageSnap: widget.pageSnap,
       defaultPage: widget.defaultPage,
+      dualPageMode: widget.dualPageMode,
     );
   }
 
@@ -172,6 +176,7 @@ class _PDFViewSettings {
   final bool pageFling;
   final bool pageSnap;
   final int defaultPage;
+  final bool dualPageMode;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -184,6 +189,7 @@ class _PDFViewSettings {
       'pageFling': pageFling,
       'pageSnap': pageSnap,
       'defaultPage': defaultPage,
+      'dualPageMode': dualPageMode,
     };
   }
 
@@ -204,6 +210,9 @@ class _PDFViewSettings {
     }
     if (defaultPage != newSettings.defaultPage) {
       updates['defaultPage'] = newSettings.defaultPage;
+    }
+    if (dualPageMode != newSettings.dualPageMode) {
+      updates['dualPageMode'] = newSettings.dualPageMode;
     }
 
     return updates;
@@ -229,7 +238,6 @@ class PDFViewController {
     print([call.method, call.arguments]);
     switch (call.method) {
       case 'onRender':
-        print("CASE RENDERING!!!!!!!");
         if (_widget.onRender != null) {
           print("onRender != null !!!!!!!!!!!!!!");
           _widget.onRender(call.arguments['pages']);
