@@ -1,3 +1,7 @@
+## 1.0.1+2
+New release fixing the channel id for the invoke method and renaming java and objc files
+
+
 ## 1.0.0+1
 
 First release of the updated plugin flutter_pdfview from endigo
