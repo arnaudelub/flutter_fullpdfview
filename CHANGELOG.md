@@ -1,3 +1,11 @@
+## 1.0.1+4
+
+Updating the README file
+
+## 1.0.1+3
+
+Adding analisys_options.yaml
+
 ## 1.0.1+2
 New release fixing the channel id for the invoke method and renaming java and objc files
 

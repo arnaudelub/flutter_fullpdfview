@@ -10,7 +10,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
-  flutter_fullpdfview: ^2.0.0+10
+  flutter_fullpdfview: latest_version
 ```
 
 ### 2. Install it
@@ -52,13 +52,14 @@ import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 | gestureRecognizers |   ✅    | ✅
 | filePath           |   ✅    | ✅
 | fitEachPage        |   ✅    | ✅
+| defaultPage        |   ✅    | ✅
 | enableSwipe        |   ✅    | ✅  |
 | swipeHorizontal    |   ✅    | ✅  |
-| password           |   ✅    | ✅  |
-| nightMode          |   ✅    | ❌  |
+| password           |   ✅    |  ✅  |
+| nightMode          |   ✅    |  ❌  |
 | password           |   ✅    | ✅  |
 | autoSpacing        |   ✅    | ✅  |
-| pageFling          |   ✅    | ✅  |
+| pageFling          |   ✅    |  ✅  |
 | pageSnap           |   ✅    | ❌  |
 
 ## Controller Options
@@ -79,6 +80,7 @@ PDFView(
   swipeHorizontal: true,
   autoSpacing: false, //if fitEachPage , in landscape need to set it to true to fit 1 page
   pageFling: false,
+  defaultPage: 8,
   onRender: (_pages) {
     setState(() {
       pages = _pages;
