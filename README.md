@@ -116,6 +116,8 @@ If you use proguard, you should include this line.
 
 ### Android
 
+[apv](https://github.com/arnaudelub/apv)
+Updated From:
 [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer)
 
 ### iOS (only support> 11.0)
