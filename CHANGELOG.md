@@ -1,3 +1,6 @@
+## 1.0.2+6
+Updating README
+
 ## 1.0.2+5
 Added dualpage mode based on the orientation of the device
 
