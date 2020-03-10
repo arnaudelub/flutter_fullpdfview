@@ -143,41 +143,45 @@ class _PDFScreenState extends State<PDFScreen> {
       ),
       body: Stack(
         children: <Widget>[
-          PDFView(
-            filePath: widget.path,
-            fitEachPage: false,
-            dualPageMode: true,
-            enableSwipe: true,
-            swipeHorizontal: true,
-            autoSpacing: false,
-            pageFling: true,
-            defaultPage: 8,
-            pageSnap: false,
-            onRender: (_pages) {
-              print("OK RENDERED!!!!!");
-              setState(() {
-                pages = _pages;
-                isReady = true;
-              });
-            },
-            onError: (error) {
-              setState(() {
-                errorMessage = error.toString();
-              });
-              print(error.toString());
-            },
-            onPageError: (page, error) {
-              setState(() {
-                errorMessage = '$page: ${error.toString()}';
-              });
-              print('$page: ${error.toString()}');
-            },
-            onViewCreated: (PDFViewController pdfViewController) {
-              _controller.complete(pdfViewController);
-            },
-            onPageChanged: (int page, int total) {
-              print('page change: $page/$total');
-            },
+          Container(
+            color: Colors.black,
+            child: PDFView(
+              filePath: widget.path,
+              fitEachPage: false,
+              dualPageMode: true,
+              enableSwipe: true,
+              swipeHorizontal: true,
+              autoSpacing: false,
+              pageFling: true,
+              defaultPage: 8,
+              pageSnap: false,
+              backgroundColor: bgcolors.BLACK,
+              onRender: (_pages) {
+                print("OK RENDERED!!!!!");
+                setState(() {
+                  pages = _pages;
+                  isReady = true;
+                });
+              },
+              onError: (error) {
+                setState(() {
+                  errorMessage = error.toString();
+                });
+                print(error.toString());
+              },
+              onPageError: (page, error) {
+                setState(() {
+                  errorMessage = '$page: ${error.toString()}';
+                });
+                print('$page: ${error.toString()}');
+              },
+              onViewCreated: (PDFViewController pdfViewController) {
+                _controller.complete(pdfViewController);
+              },
+              onPageChanged: (int page, int total) {
+                print('page change: $page/$total');
+              },
+            ),
           ),
           errorMessage.isEmpty
               ? !isReady

@@ -11,6 +11,8 @@ typedef void PageChangedCallback(int page, int total);
 typedef void ErrorCallback(dynamic error);
 typedef void PageErrorCallback(int page, dynamic error);
 
+enum bgcolors { BLACK, WHITE, CYAN, BLUE }
+
 class PDFView extends StatefulWidget {
   const PDFView({
     Key key,
@@ -31,6 +33,7 @@ class PDFView extends StatefulWidget {
     this.pageFling = true,
     this.pageSnap = true,
     this.defaultPage = 0,
+    this.backgroundColor = bgcolors.WHITE,
   }) : super(key: key);
 
   @override
@@ -66,6 +69,7 @@ class PDFView extends StatefulWidget {
   final bool pageSnap;
   final int defaultPage;
   final bool dualPageMode;
+  final bgcolors backgroundColor;
 }
 
 class _PDFViewState extends State<PDFView> {
@@ -150,6 +154,7 @@ class _PDFViewSettings {
     this.pageSnap,
     this.defaultPage,
     this.dualPageMode,
+    this.backgroundColor,
   });
 
   static _PDFViewSettings fromWidget(PDFView widget) {
@@ -164,6 +169,7 @@ class _PDFViewSettings {
       pageSnap: widget.pageSnap,
       defaultPage: widget.defaultPage,
       dualPageMode: widget.dualPageMode,
+      backgroundColor: convertTtoString(widget.backgroundColor),
     );
   }
 
@@ -177,6 +183,22 @@ class _PDFViewSettings {
   final bool pageSnap;
   final int defaultPage;
   final bool dualPageMode;
+  final String backgroundColor;
+
+  static String convertTtoString(bgcolors bg) {
+    switch (bg) {
+      case bgcolors.BLACK:
+        return 'black';
+      case bgcolors.BLUE:
+        return 'blue';
+      case bgcolors.CYAN:
+        return 'cyan';
+      case bgcolors.WHITE:
+        return 'white';
+      default:
+        return 'white';
+    }
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -190,6 +212,7 @@ class _PDFViewSettings {
       'pageSnap': pageSnap,
       'defaultPage': defaultPage,
       'dualPageMode': dualPageMode,
+      'backgroundColor': backgroundColor,
     };
   }
 
@@ -213,6 +236,9 @@ class _PDFViewSettings {
     }
     if (dualPageMode != newSettings.dualPageMode) {
       updates['dualPageMode'] = newSettings.dualPageMode;
+    }
+    if (backgroundColor != newSettings.backgroundColor) {
+      updates['backgroundColor'] = newSettings.backgroundColor;
     }
 
     return updates;

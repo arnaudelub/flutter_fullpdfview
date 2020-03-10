@@ -1,8 +1,9 @@
 package com.github.arnaudelub.flutter_fullpdfview;
 
 import android.content.Context;
-import android.view.View;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.view.View;
 import com.github.arnaudelub.pdfviewer.PDFView;
 import com.github.arnaudelub.pdfviewer.listener.*;
 import com.github.arnaudelub.pdfviewer.util.Constants;
@@ -55,6 +56,7 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
           .autoSpacing(dualMode ? false : getBoolean(params, "autoSpacing"))
           .pageFling(getBoolean(params, "pageFling"))
           .pageSnap(getBoolean(params, "pageSnap"))
+          .backgroundColor(getColorFromString(getString(params, "backgroundColor")))
           .onPageChange(
               new OnPageChangeListener() {
                 @Override
@@ -159,6 +161,7 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
           break;
         case "fitEachPage":
           pdfView.setFitEachPage(getBoolean(settings, key));
+          break;
         default:
           throw new IllegalArgumentException("Unknown PDFView setting: " + key);
       }
@@ -180,5 +183,20 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
 
   int getInt(Map<String, Object> params, String key) {
     return params.containsKey(key) ? (int) params.get(key) : 0;
+  }
+
+  int getColorFromString(String color) {
+    switch (color) {
+      case "black":
+        return Color.BLACK;
+      case "blue":
+        return Color.BLUE;
+      case "white":
+        return Color.WHITE;
+      case "cyan":
+        return Color.CYAN;
+      default:
+        throw new IllegalArgumentException("Unknown color: " + color);
+    }
   }
 }
