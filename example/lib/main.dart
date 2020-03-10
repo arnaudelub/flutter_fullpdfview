@@ -150,7 +150,7 @@ class _PDFScreenState extends State<PDFScreen> {
             enableSwipe: true,
             swipeHorizontal: true,
             autoSpacing: false,
-            pageFling: false,
+            pageFling: true,
             defaultPage: 8,
             pageSnap: false,
             onRender: (_pages) {
