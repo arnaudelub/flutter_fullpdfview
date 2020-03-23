@@ -1,6 +1,6 @@
 name: flutter_fullpdfview
 description: A Pdf Viewer for Android and IOS including fit policy. Based on flutter_pdfview from endigo.
-version: 1.0.4+1
+version: 1.0.5+1
 verified publisher: candelub.eu
 homepage: https://github.com/arnaudelub/flutter_fullpdfview
 

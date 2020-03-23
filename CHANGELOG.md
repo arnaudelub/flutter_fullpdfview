@@ -1,3 +1,6 @@
+## 1.0.5+1
+Adding fitPolicy selector and possility to get the actual zoom
+
 ## 1.0.4+1
 Adding setPageWithAnimation and resetZoom to the controller
 

@@ -336,6 +336,11 @@ class PDFViewController {
     return isSet;
   }
 
+  Future<double> getZoom() async {
+    final double zoom = await _channel.invokeMethod('currentZoom');
+    return zoom;
+  }
+
   Future<void> _updateWidget(PDFView widget) async {
     _widget = widget;
     await _updateSettings(_PDFViewSettings.fromWidget(widget));

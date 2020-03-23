@@ -202,6 +202,7 @@ class _PDFScreenState extends State<PDFScreen> {
                 return FloatingActionButton.extended(
                   label: Text("Go to ${pages ~/ 2}"),
                   onPressed: () async {
+                    print(await snapshot.data.getZoom());
                     await snapshot.data.setPage(pages ~/ 2);
                   },
                 );

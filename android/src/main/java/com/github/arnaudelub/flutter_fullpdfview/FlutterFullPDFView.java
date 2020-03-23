@@ -3,6 +3,7 @@ package com.github.arnaudelub.flutter_fullpdfview;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import com.github.arnaudelub.pdfviewer.PDFView;
 import com.github.arnaudelub.pdfviewer.listener.*;
@@ -125,6 +126,9 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
       case "resetZoom":
         resetZoom(methodCall, result);
         break;
+      case "currentZoom":
+        getZoom(methodCall, result);
+        break;
       case "updateSettings":
         updateSettings(methodCall, result);
         break;
@@ -144,6 +148,9 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
 
   void setPage(MethodCall call, Result result, boolean withAnimation) {
     int page = (int) call.argument("page");
+    double width = pdfView.getPdfPageWidth(page);
+    double zoom = pdfView.getZoom();
+    Log.e("TAG", "Size pdf: " + width + ", and zoom is " + zoom);
     pdfView.jumpTo(page, withAnimation);
     result.success(true);
   }
@@ -152,6 +159,11 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
     int page = (int) call.argument("page");
     pdfView.fitToWidth(page);
     result.success(true);
+  }
+
+  void getZoom(MethodCall call, Result result) {
+    double zoom = pdfView.getZoom();
+    result.sucess(zoom);
   }
 
   @SuppressWarnings("unchecked")

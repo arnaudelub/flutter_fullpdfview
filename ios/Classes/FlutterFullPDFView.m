@@ -37,6 +37,7 @@
     FlutterMethodChannel* _channel;
     NSNumber* _pageCount;
     NSNumber* _currentPage;
+    NSNumber* _zoom;
     BOOL _pageFling;
     BOOL _enableSwipe;
     BOOL _dualPage;
@@ -196,9 +197,16 @@
         [self setPage:call result:result];
     } else if ([[call method] isEqualToString:@"updateSettings"]) {
         [self onUpdateSettings:call result:result];
+    } else if ([[call method] isEqualToString:@"currentZoom"]) {
+        [self getZoom:call result:result];
     } else {
         result(FlutterMethodNotImplemented);
     }
+}
+
+- (void)getZoom:(FlutterMethodCall*)call result:(FlutterResult)result {
+    _zoom = [NSNumber numberWithFloat: _pdfView.scaleFactor];
+    result(_zoom);
 }
 
 - (void)getPageCount:(FlutterMethodCall*)call result:(FlutterResult)result {
@@ -214,7 +222,7 @@
 - (void)setPage:(FlutterMethodCall*)call result:(FlutterResult)result {
     NSDictionary<NSString*, NSNumber*>* arguments = [call arguments];
     NSNumber* page = arguments[@"page"];
-    
+
     [_pdfView goToPage: [_pdfView.document pageAtIndex: page.unsignedLongValue ]];
     result(_currentPage);
 }
