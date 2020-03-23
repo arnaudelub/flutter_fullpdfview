@@ -61,7 +61,7 @@ import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 | password           |   ✅    | ✅ |
 | autoSpacing        |   ✅    | ✅ |
 | pageFling          |   ✅    |  ✅ |
-| pageSnap           |   ✅    ||  ❌ |
+| pageSnap           |   ✅    || ❌ |
 | backgroundColor   |   ✅    |  ✅|
 | fitPolicy   |   ✅    |    ❌|
 
@@ -76,7 +76,7 @@ Only black and white are supported on Android and iOS at the moment!
 | setPage              |    Go to/Set page            | `int page`   | `Future<bool>` |
 | setPageWithAnimation |    Go to/Set page            | `int page`   | `Future<bool>` |
 | resetAnimation       |    Go page and fitToWidth    | `int page`   | `Future<bool>` |
-| getZoom              |    Get the current zoom      | `double zoom | `Future<double>` |
+| getZoom              |    Get the current zoom      | `double zoom` | `Future<double>` |
 
 ## Example
 
