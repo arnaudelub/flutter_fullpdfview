@@ -12,6 +12,7 @@ typedef void ErrorCallback(dynamic error);
 typedef void PageErrorCallback(int page, dynamic error);
 
 enum bgcolors { BLACK, WHITE, CYAN, BLUE }
+enum FitPolicy { WIDTH, HEIGHT, BOTH }
 
 class PDFView extends StatefulWidget {
   const PDFView({
@@ -24,6 +25,7 @@ class PDFView extends StatefulWidget {
     this.onPageError,
     this.gestureRecognizers,
     this.dualPageMode = false,
+    this.fitPolicy = FitPolicy.BOTH,
     this.fitEachPage = true,
     this.enableSwipe = true,
     this.swipeHorizontal = false,
@@ -59,6 +61,7 @@ class PDFView extends StatefulWidget {
 
   /// The initial URL to load.
   final String filePath;
+  final FitPolicy fitPolicy;
   final bool fitEachPage;
   final bool enableSwipe;
   final bool swipeHorizontal;
@@ -145,6 +148,7 @@ class _CreationParams {
 class _PDFViewSettings {
   _PDFViewSettings({
     this.enableSwipe,
+    this.fitPolicy,
     this.fitEachPage,
     this.swipeHorizontal,
     this.password,
@@ -160,6 +164,7 @@ class _PDFViewSettings {
   static _PDFViewSettings fromWidget(PDFView widget) {
     return _PDFViewSettings(
       enableSwipe: widget.enableSwipe,
+      fitPolicy: widget.fitPolicy,
       fitEachPage: widget.fitEachPage,
       swipeHorizontal: widget.swipeHorizontal,
       password: widget.password,
@@ -174,6 +179,7 @@ class _PDFViewSettings {
   }
 
   final bool enableSwipe;
+  final FitPolicy fitPolicy;
   final bool fitEachPage;
   final bool swipeHorizontal;
   final String password;
@@ -203,6 +209,7 @@ class _PDFViewSettings {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'enableSwipe': enableSwipe,
+      'fitPolicy': fitPolicy.toString(),
       'fitEachPage': fitEachPage,
       'swipeHorizontal': swipeHorizontal,
       'password': password,
@@ -217,7 +224,6 @@ class _PDFViewSettings {
   }
 
   Map<String, dynamic> updatesMap(_PDFViewSettings newSettings) {
-    print(newSettings.fitEachPage);
     final Map<String, dynamic> updates = <String, dynamic>{};
     if (enableSwipe != newSettings.enableSwipe) {
       updates['enableSwipe'] = newSettings.enableSwipe;
@@ -227,6 +233,9 @@ class _PDFViewSettings {
     }
     if (pageSnap != newSettings.pageSnap) {
       updates['pageSnap'] = newSettings.pageSnap;
+    }
+    if (fitPolicy != newSettings.fitPolicy) {
+      updates['fitPolicy'] = newSettings.fitPolicy;
     }
     if (fitEachPage != newSettings.fitEachPage) {
       updates['fitEachPage'] = newSettings.fitEachPage;
@@ -306,6 +315,22 @@ class PDFViewController {
 
   Future<bool> setPage(int page) async {
     final bool isSet = await _channel.invokeMethod('setPage', <String, dynamic>{
+      'page': page,
+    });
+    return isSet;
+  }
+
+  Future<bool> setPageWithAnimation(int page) async {
+    final bool isSet =
+        await _channel.invokeMethod('setPageWithAnimation', <String, dynamic>{
+      'page': page,
+    });
+    return isSet;
+  }
+
+  Future<bool> resetZoom(int page) async {
+    final bool isSet =
+        await _channel.invokeMethod('resetZoom', <String, dynamic>{
       'page': page,
     });
     return isSet;

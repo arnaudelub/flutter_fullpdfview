@@ -1,3 +1,14 @@
+## 1.0.4+1
+Adding setPageWithAnimation and resetZoom to the controller
+
+## 1.0.3+2
+Fixing vertical scroll on iOS
+
+## 1.0.3+1
+Updating with apv version 1.2.0
+Adding backgroundColor support
+Adding dualPageMode support on IOS
+
 ## 1.0.2+9
 Updating with apv version 1.1.0
 

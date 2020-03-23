@@ -53,23 +53,28 @@ import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 | filePath           |   ✅    | ✅
 | fitEachPage        |   ✅    | ✅
 | defaultPage        |   ✅    | ✅
-| dualPageMode       |   ✅    | ❌  |
+| dualPageMode       |   ✅    |  ✅ |
 | enableSwipe        |   ✅    | ✅  |
 | swipeHorizontal    |   ✅    | ✅  |
 | password           |   ✅    |  ✅  |
 | nightMode          |   ✅    |  ❌  |
-| password           |   ✅    | ✅  |
-| autoSpacing        |   ✅    | ✅  |
-| pageFling          |   ✅    |  ✅  |
-| pageSnap           |   ✅    | ❌  |
+| password           |   ✅    | ✅ |
+| autoSpacing        |   ✅    | ✅ |
+| pageFling          |   ✅    |  ✅ |
+| pageSnap           |   ✅    | ❌ |
+| backgroundColor   |   ✅    |  ✅|
+
+Only black and white are supported on Android and iOS at the moment!
 
 ## Controller Options
 
-| Name           |     Description      | Parameters |     Return     |
-| :------------- | :------------------: | :--------: | :------------: |
-| getPageCount   | Get total page count |     -      | `Future<int>`  |
-| getCurrentPage |   Get current page   |     -      | `Future<int>`  |
-| setPage        |    Go to/Set page    | `int page` | `Future<bool>` |
+| Name                 |     Description              | Parameters |     Return     |
+| :------------------- | :------------------:         | :--------: | :------------: |
+| getPageCount         | Get total page count         |     -      | `Future<int>`  |
+| getCurrentPage       |   Get current page           |     -      | `Future<int>`  |
+| setPage              |    Go to/Set page            | `int page` | `Future<bool>` |
+| setPageWithAnimation |    Go to/Set page            | `int page` | `Future<bool>` |
+| resetAnimation       |    Go page and fitToWidth    | `int page` | `Future<bool>` |
 
 ## Example
 
@@ -77,9 +82,9 @@ import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 PDFView(
   filePath: path,
   enableSwipe: true,
-  fitEachPage: true, 
+  fitEachPage: true,
   swipeHorizontal: true,
-  autoSpacing: false, 
+  autoSpacing: false,
   pageFling: false,
   defaultPage: 8,
   dualPageMode: orientation == Orientation.landscape

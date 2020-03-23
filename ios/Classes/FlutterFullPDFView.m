@@ -37,6 +37,9 @@
     FlutterMethodChannel* _channel;
     NSNumber* _pageCount;
     NSNumber* _currentPage;
+    BOOL _pageFling;
+    BOOL _enableSwipe;
+    BOOL _dualPage;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -45,7 +48,6 @@
               binaryMessenger:(NSObject<FlutterBinaryMessenger>*)messenger {
     if ([super init]) {
         _viewId = viewId;
-
         NSString* channelName = [NSString stringWithFormat:@"plugins.arnaudelub.io/pdfview_%lld", viewId];
         _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:messenger];
 
@@ -56,11 +58,25 @@
             [weakSelf onMethodCall:call result:result];
         }];
 
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+        [[NSNotificationCenter defaultCenter]
+           addObserver:self selector:@selector(orientationChanged:)
+           name:UIDeviceOrientationDidChangeNotification
+           object:[UIDevice currentDevice]];
         BOOL autoSpacing = [args[@"autoSpacing"] boolValue];
+        BOOL dualPage = [args[@"dualPageMode"] boolValue];
         BOOL pageFling = [args[@"pageFling"] boolValue];
         BOOL enableSwipe = [args[@"enableSwipe"] boolValue];
         NSInteger defaultPage = [args[@"defaultPage"] integerValue];
         NSString* filePath = args[@"filePath"];
+        NSString *backgroundColor = args[@"backgroundColor"];
+        UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
+        swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.view addGestureRecognizer:swipeLeft];
+
+        UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self  action:@selector(didSwipe:)];
+        swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+        [self.view addGestureRecognizer:swipeRight];
         if ([filePath isKindOfClass:[NSString class]]) {
             NSURL * sourcePDFUrl = [NSURL fileURLWithPath:filePath];
             PDFDocument * document = [[PDFDocument alloc] initWithURL: sourcePDFUrl];
@@ -71,7 +87,6 @@
                 _pdfView.autoresizesSubviews = YES;
                 _pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-                _pdfView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
                 BOOL swipeHorizontal = [args[@"swipeHorizontal"] boolValue];
                 if (swipeHorizontal) {
                     _pdfView.displayDirection = kPDFDisplayDirectionHorizontal;
@@ -79,10 +94,29 @@
                     _pdfView.displayDirection = kPDFDisplayDirectionVertical;
                 }
 
+                if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
+                {
+                             // code for landscape orientation
+                  _pdfView.displayMode = dualPage ? kPDFDisplayTwoUp : kPDFDisplaySinglePageContinuous ;
+                  _pdfView.displaysAsBook = dualPage ? YES : NO;
+                  NSLog(@"In landscape mode");           //
+                }
+                if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation))
+                {
+                             // code for Portrait orientation
+                    _pdfView.displayMode = enableSwipe  ? kPDFDisplaySinglePageContinuous : kPDFDisplaySinglePage;
                 [_pdfView usePageViewController:pageFling withViewOptions:nil];
+                 NSLog(@"In portrait mode");            //
+                }
                 _pdfView.autoScales = autoSpacing;
-                _pdfView.displayMode = enableSwipe ? kPDFDisplaySinglePageContinuous : kPDFDisplaySinglePage;
                 _pdfView.document = document;
+                if([backgroundColor isEqual:  @"black"]) {
+                    _pdfView.backgroundColor =[UIColor blackColor ];
+                }else if([backgroundColor isEqual:  @"white"]){
+                    _pdfView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+                }else {
+                    _pdfView.backgroundColor = [UIColor blackColor];
+                }
 
 
                 NSUInteger pageCount = [document pageCount];
@@ -119,6 +153,7 @@
                     [weakSelf handleRenderCompleted:[NSNumber numberWithUnsignedLong: [document pageCount]]];
                 });
 
+
                 NSString* password = args[@"password"];
                 if ([password isKindOfClass:[NSString class]] && [_pdfView.document isEncrypted]) {
                     [_pdfView.document unlockWithPassword:password];
@@ -138,6 +173,19 @@
     return _pdfView;
 }
 
+- (void)didSwipe:(UISwipeGestureRecognizer*)swipe{
+    if (swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
+        NSLog(@"Swipe Left");
+        if ([_pdfView canGoToNextPage]){
+            [_pdfView goToNextPage:nil];
+        }
+    } else if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {
+        NSLog(@"Swipe Right");
+        if ([_pdfView canGoToPreviousPage]){
+            [_pdfView goToPreviousPage:nil];
+        }
+   }
+}
 
 - (void)onMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     if ([[call method] isEqualToString:@"pageCount"]) {
@@ -166,7 +214,7 @@
 - (void)setPage:(FlutterMethodCall*)call result:(FlutterResult)result {
     NSDictionary<NSString*, NSNumber*>* arguments = [call arguments];
     NSNumber* page = arguments[@"page"];
-
+    
     [_pdfView goToPage: [_pdfView.document pageAtIndex: page.unsignedLongValue ]];
     result(_currentPage);
 }
@@ -183,5 +231,23 @@
     [_channel invokeMethod:@"onRender" arguments:@{@"pages" : pages}];
 }
 
+- (void) orientationChanged:(NSNotification *)note
+{
+       UIDevice * device = note.object;
+        _pdfView.autoScales = YES;
+       NSLog(@"orientation changed");
+          switch(device.orientation)
+          {
+             case UIDeviceOrientationPortrait:
+                            /* start special animation */
+                 break;
+             case UIDeviceOrientationPortraitUpsideDown:
+                                      /* start special animation */
+                 break;
+             default:
+             break;
 
+          };
+
+}
 @end

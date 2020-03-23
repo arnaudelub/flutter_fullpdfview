@@ -31,12 +31,12 @@ class _MyAppState extends State<MyApp> {
         pathPDF = f.path;
       });
     });
-    // createFileOfPdfUrl().then((f) {
-    //   setState(() {
-    //     pathPDF = f.path;
-    //     print(pathPDF);
-    //   });
-    // });
+    createFileOfPdfUrl().then((f) {
+      setState(() {
+        pathPDF = f.path;
+        print(pathPDF);
+      });
+    });
   }
 
   Future<File> createFileOfPdfUrl() async {
@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
     var response = await request.close();
     var bytes = await consolidateHttpClientResponseBytes(response);
     String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = new File('$dir/$filename');
+    File file = File('$dir/$filename');
     await file.writeAsBytes(bytes);
     return file;
   }
@@ -123,90 +123,135 @@ class PDFScreen extends StatefulWidget {
 }
 
 class _PDFScreenState extends State<PDFScreen> {
-  final Completer<PDFViewController> _controller =
-      Completer<PDFViewController>();
   int pages = 0;
   bool isReady = false;
   String errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Document"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {},
+    return OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+      if (orientation == Orientation.portrait) {
+        final Completer<PDFViewController> _controller =
+            Completer<PDFViewController>();
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("Document"),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.share),
+                onPressed: () {},
+              ),
+            ],
           ),
-        ],
-      ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            color: Colors.black,
-            child: PDFView(
-              filePath: widget.path,
-              fitEachPage: false,
-              dualPageMode: true,
-              enableSwipe: true,
-              swipeHorizontal: true,
-              autoSpacing: false,
-              pageFling: true,
-              defaultPage: 8,
-              pageSnap: false,
-              backgroundColor: bgcolors.BLACK,
-              onRender: (_pages) {
-                print("OK RENDERED!!!!!");
-                setState(() {
-                  pages = _pages;
-                  isReady = true;
-                });
-              },
-              onError: (error) {
-                setState(() {
-                  errorMessage = error.toString();
-                });
-                print(error.toString());
-              },
-              onPageError: (page, error) {
-                setState(() {
-                  errorMessage = '$page: ${error.toString()}';
-                });
-                print('$page: ${error.toString()}');
-              },
-              onViewCreated: (PDFViewController pdfViewController) {
-                _controller.complete(pdfViewController);
-              },
-              onPageChanged: (int page, int total) {
-                print('page change: $page/$total');
-              },
-            ),
+          body: Stack(
+            children: <Widget>[
+              Container(
+                color: Colors.black,
+                child: PDFView(
+                  filePath: widget.path,
+                  fitEachPage: true,
+                  dualPageMode: false,
+                  enableSwipe: true,
+                  swipeHorizontal: true,
+                  autoSpacing: false,
+                  pageFling: true,
+                  defaultPage: 8,
+                  pageSnap: true,
+                  backgroundColor: bgcolors.BLACK,
+                  onRender: (_pages) {
+                    print("OK RENDERED!!!!!");
+                    setState(() {
+                      pages = _pages;
+                      isReady = true;
+                    });
+                  },
+                  onError: (error) {
+                    setState(() {
+                      errorMessage = error.toString();
+                    });
+                    print(error.toString());
+                  },
+                  onPageError: (page, error) {
+                    setState(() {
+                      errorMessage = '$page: ${error.toString()}';
+                    });
+                    print('$page: ${error.toString()}');
+                  },
+                  onViewCreated: (PDFViewController pdfViewController) {
+                    _controller.complete(pdfViewController);
+                  },
+                  onPageChanged: (int page, int total) {
+                    print('page change: $page/$total');
+                  },
+                ),
+              ),
+              errorMessage.isEmpty
+                  ? !isReady
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Container()
+                  : Center(child: Text(errorMessage))
+            ],
           ),
-          errorMessage.isEmpty
-              ? !isReady
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Container()
-              : Center(child: Text(errorMessage))
-        ],
-      ),
-      floatingActionButton: FutureBuilder<PDFViewController>(
-        future: _controller.future,
-        builder: (context, AsyncSnapshot<PDFViewController> snapshot) {
-          if (snapshot.hasData) {
-            return FloatingActionButton.extended(
-              label: Text("Go to ${pages ~/ 2}"),
-              onPressed: () async {
-                await snapshot.data.setPage(pages ~/ 2);
-              },
-            );
-          }
+          floatingActionButton: FutureBuilder<PDFViewController>(
+            future: _controller.future,
+            builder: (context, AsyncSnapshot<PDFViewController> snapshot) {
+              if (snapshot.hasData) {
+                return FloatingActionButton.extended(
+                  label: Text("Go to ${pages ~/ 2}"),
+                  onPressed: () async {
+                    await snapshot.data.setPage(pages ~/ 2);
+                  },
+                );
+              }
 
-          return Container();
-        },
-      ),
-    );
+              return Container();
+            },
+          ),
+        );
+      } else {
+        final Completer<PDFViewController> _controller =
+            Completer<PDFViewController>();
+        return PDFView(
+          filePath: widget.path,
+          fitEachPage: false,
+          dualPageMode: true,
+          enableSwipe: true,
+          swipeHorizontal: true,
+          autoSpacing: false,
+          pageFling: true,
+          defaultPage: 8,
+          pageSnap: false,
+          backgroundColor: bgcolors.BLACK,
+          onRender: (_pages) {
+            print("OK RENDERED!!!!!");
+            setState(() {
+              pages = _pages;
+              isReady = true;
+            });
+          },
+          onError: (error) {
+            setState(() {
+              errorMessage = error.toString();
+            });
+            print(error.toString());
+          },
+          onPageError: (page, error) {
+            setState(() {
+              errorMessage = '$page: ${error.toString()}';
+            });
+            print('$page: ${error.toString()}');
+          },
+          onViewCreated: (PDFViewController pdfViewController) {
+            _controller.complete(pdfViewController);
+          },
+          onPageChanged: (int page, int total) {
+            print('page change: $page/$total');
+          },
+        );
+      }
+    });
   }
 }

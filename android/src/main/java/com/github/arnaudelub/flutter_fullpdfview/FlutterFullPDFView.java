@@ -47,8 +47,9 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
           .landscapeOrientation(isLandscape)
           .enableAnnotationRendering(true)
           .dualPageMode(getBoolean(params, "dualPageMode"))
-          .pageFitPolicy(FitPolicy.BOTH)
           .enableSwipe(getBoolean(params, "enableSwipe"))
+          // .pageFitPolicy(getFitPolicy(params))
+          .pageFitPolicy(FitPolicy.BOTH)
           .fitEachPage(dualMode ? false : getBoolean(params, "fitEachPage"))
           .swipeHorizontal(getBoolean(params, "swipeHorizontal"))
           .password(getString(params, "password"))
@@ -116,11 +117,20 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
         getCurrentPage(result);
         break;
       case "setPage":
-        setPage(methodCall, result);
+        setPage(methodCall, result, false);
+        break;
+      case "setPageWithAnimation":
+        setPage(methodCall, result, true);
+        break;
+      case "resetZoom":
+        resetZoom(methodCall, result);
+        break;
       case "updateSettings":
-        setPage(methodCall, result);
+        updateSettings(methodCall, result);
+        break;
       default:
         result.notImplemented();
+        break;
     }
   }
 
@@ -132,9 +142,15 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
     result.success(pdfView.getCurrentPage());
   }
 
-  void setPage(MethodCall call, Result result) {
+  void setPage(MethodCall call, Result result, boolean withAnimation) {
     int page = (int) call.argument("page");
-    pdfView.jumpTo(page);
+    pdfView.jumpTo(page, withAnimation);
+    result.success(true);
+  }
+
+  void resetZoom(MethodCall call, Result result) {
+    int page = (int) call.argument("page");
+    pdfView.fitToWidth(page);
     result.success(true);
   }
 
@@ -197,6 +213,19 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
         return Color.CYAN;
       default:
         throw new IllegalArgumentException("Unknown color: " + color);
+    }
+  }
+
+  FitPolicy getFitPolicy(Map<String, Object> params) {
+    String fitPolicy = getString(params, "fitPolicy");
+    switch (fitPolicy) {
+      case "FitPolicy.WIDTH":
+        return FitPolicy.WIDTH;
+      case "FitPolicy.HEIGHT":
+        return FitPolicy.HEIGHT;
+      case "FitPolicy.BOTH":
+      default:
+        return FitPolicy.BOTH;
     }
   }
 }
