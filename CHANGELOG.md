@@ -1,3 +1,6 @@
+## 1.0.5+3
+Adding LICENSE
+
 ## 1.0.5+2
 Fixing typo
 
