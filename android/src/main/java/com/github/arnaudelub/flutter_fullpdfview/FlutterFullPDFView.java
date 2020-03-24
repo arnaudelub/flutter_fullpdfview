@@ -127,7 +127,7 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
         resetZoom(methodCall, result);
         break;
       case "currentZoom":
-        getZoom(methodCall, result);
+        getZoom(result);
         break;
       case "updateSettings":
         updateSettings(methodCall, result);
@@ -161,9 +161,9 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
     result.success(true);
   }
 
-  void getZoom(MethodCall call, Result result) {
+  void getZoom(Result result) {
     double zoom = pdfView.getZoom();
-    result.sucess(zoom);
+    result.success(zoom);
   }
 
   @SuppressWarnings("unchecked")

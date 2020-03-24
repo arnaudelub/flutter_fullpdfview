@@ -1,3 +1,6 @@
+## 1.0.5+2
+Fixing typo
+
 ## 1.0.5+1
 Adding fitPolicy selector and possility to get the actual zoom
 
