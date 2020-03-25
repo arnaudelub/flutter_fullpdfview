@@ -123,6 +123,12 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
       case "setPageWithAnimation":
         setPage(methodCall, result, true);
         break;
+      case "pageWidth":
+        getPageWidth(methodCall, result);
+        break;
+      case "pageHeight":
+        getPageHeight(methodCall, result);
+        break;
       case "resetZoom":
         resetZoom(methodCall, result);
         break;
@@ -136,6 +142,18 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
         result.notImplemented();
         break;
     }
+  }
+
+  void getPageWidth(MethodCall call, Result result) {
+    int page = (int) call.argument("page");
+    double width = pdfView.getPdfPageWidth(page) * pdfView.getZoom();
+    result.success(width);
+  }
+
+  void getPageHeight(MethodCall call, Result result) {
+    int page = (int) call.argument("page");
+    double height = pdfView.getPdfPageHeight(page) * pdfView.getZoom();
+    result.success(height);
   }
 
   void getPageCount(Result result) {

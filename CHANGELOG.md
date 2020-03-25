@@ -1,3 +1,21 @@
+## 1.0.6+5
+Adding reset zoom for iOS
+
+## 1.0.6+4
+Fixing default page issue
+
+## 1.0.6+3
+Fixing android get page size, scalefactor was missing in the returned value!
+
+## 1.0.6+2
+Updating APV version to 1.3.0
+
+## 1.0.6+1
+Adding getPageWidth and getPAgeHeight with the scale to controller
+
+## 1.0.5+5
+Fixing scale on ios in dual page mode
+
 ## 1.0.5+4
 Fixing scale on ios in dual page mode
 

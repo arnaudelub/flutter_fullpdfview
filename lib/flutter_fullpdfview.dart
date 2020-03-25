@@ -240,9 +240,6 @@ class _PDFViewSettings {
     if (fitEachPage != newSettings.fitEachPage) {
       updates['fitEachPage'] = newSettings.fitEachPage;
     }
-    if (defaultPage != newSettings.defaultPage) {
-      updates['defaultPage'] = newSettings.defaultPage;
-    }
     if (dualPageMode != newSettings.dualPageMode) {
       updates['dualPageMode'] = newSettings.dualPageMode;
     }
@@ -301,6 +298,18 @@ class PDFViewController {
     }
     throw MissingPluginException(
         '${call.method} was invoked but has no handler');
+  }
+
+  Future<double> getPageWidth(int page) async {
+    final double pageWidth = await _channel
+        .invokeMethod('pageWidth', <String, dynamic>{'page': page});
+    return pageWidth;
+  }
+
+  Future<double> getPageHeight(int page) async {
+    final double pageHeight = await _channel
+        .invokeMethod('pageHeight', <String, dynamic>{'page': page});
+    return pageHeight;
   }
 
   Future<int> getPageCount() async {

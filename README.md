@@ -69,14 +69,16 @@ Only black and white are supported on Android and iOS at the moment!
 
 ## Controller Options
 
-| Name                 |     Description              | Parameters   |     Return     |
-| :------------------- | :------------------:         | :--------:   | :------------: |
-| getPageCount         | Get total page count         |     -        | `Future<int>`  |
-| getCurrentPage       |   Get current page           |     -        | `Future<int>`  |
-| setPage              |    Go to/Set page            | `int page`   | `Future<bool>` |
-| setPageWithAnimation |    Go to/Set page            | `int page`   | `Future<bool>` |
-| resetAnimation       |    Go page and fitToWidth    | `int page`   | `Future<bool>` |
-| getZoom              |    Get the current zoom      | `double zoom` | `Future<double>` |
+| Name                 |     Description              | Parameters     |     Return     |
+| :------------------- | :------------------:         | :--------:     | :------------: |
+| getPageCount         | Get total page count         |     -          | `Future<int>`  |
+| getCurrentPage       |   Get current page           |     -          | `Future<int>`  |
+| setPage              |    Go to/Set page            | `int page`     | `Future<bool>` |
+| setPageWithAnimation |    Go to/Set page            | `int page`     | `Future<bool>` |
+| resetZoom            |    Go page and fitToWidth    | `int page`     | `Future<bool>` |
+| getZoom              |    Get the current zoom      | `double zoom`  | `Future<double>` |
+| getPageWidth         |    Get the pdf width         | `double width` |  `Future<double>` |
+| getPageHeight        |    Get the pdf height        | `double height`| `Future<double>` |
 
 ## Example
 

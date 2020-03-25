@@ -38,9 +38,13 @@
     NSNumber* _pageCount;
     NSNumber* _currentPage;
     NSNumber* _zoom;
+    NSNumber* _pageWidth;
+    NSNumber* _pageHeight;
+    CGFloat scale;
     BOOL _pageFling;
     BOOL _enableSwipe;
     BOOL _dualPage;
+    CGSize pageSize;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -130,14 +134,14 @@
                 PDFPage* page = [document pageAtIndex: defaultPage];
                 [_pdfView goToPage: page];
                 CGRect pageRect = [page boundsForBox:[_pdfView displayBox]];
-
+                pageSize = CGSizeMake(pageRect.size.width, pageRect.size.height);
                 CGRect parentRect = [[UIScreen mainScreen] bounds];
 
                 if (frame.size.width > 0 && frame.size.height > 0) {
                     parentRect = frame;
                 }
 
-                CGFloat scale = 1.0f;
+                scale = 1.0f;
 
                 if(!dualPage){
                 if (parentRect.size.width / parentRect.size.height >= pageRect.size.width / pageRect.size.height) {
@@ -146,8 +150,12 @@
                     scale = parentRect.size.width / pageRect.size.width;
                 }
                 }else{
+                if (parentRect.size.width / parentRect.size.height >= pageRect.size.width / pageRect.size.height) {
+                    scale = parentRect.size.height / pageRect.size.height;
+                } else {
                     NSLog(@"Es dual Page!!!!!");
-                    scale = parentRect.size.width / (parentRect.size.width * 2);
+                    scale = parentRect.size.width / (parentRect.size.width *2 )  ;
+                }
                 }
 
                 NSLog(@"scale %f, parent width: %f, page width: %f, parent height: %f, page height: %f", scale, parentRect.size.width, pageRect.size.width, parentRect.size.height, pageRect.size.height);
@@ -200,8 +208,14 @@
         [self getPageCount:call result:result];
     } else if ([[call method] isEqualToString:@"currentPage"]) {
         [self getCurrentPage:call result:result];
+    } else if ([[call method] isEqualToString:@"resetZoom"]) {
+        [self resetZoom:call result:result];
     } else if ([[call method] isEqualToString:@"setPage"]) {
         [self setPage:call result:result];
+    } else if ([[call method] isEqualToString:@"pageWidth"]) {
+        [self getPageWidth:call result:result];
+    } else if ([[call method] isEqualToString:@"pageHeight"]) {
+        [self getPageHeight:call result:result];
     } else if ([[call method] isEqualToString:@"updateSettings"]) {
         [self onUpdateSettings:call result:result];
     } else if ([[call method] isEqualToString:@"currentZoom"]) {
@@ -216,6 +230,26 @@
     result(_zoom);
 }
 
+- (void)resetZoom:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSLog(@"Scale factore was %f" , _pdfView.scaleFactor);
+    _pdfView.scaleFactor=scale;
+
+    NSLog(@"Now it's %f" , _pdfView.scaleFactor);
+    result(nil);
+}
+- (void)getPageWidth:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSDictionary<NSString*, NSNumber*>* arguments = [call arguments];
+    NSNumber* page = arguments[@"page"];
+    _pageWidth = [NSNumber numberWithFloat: pageSize.width*_pdfView.scaleFactor];
+    result(_pageWidth);
+}
+
+- (void)getPageHeight:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSDictionary<NSString*, NSNumber*>* arguments = [call arguments];
+    NSNumber* page = arguments[@"page"];
+    _pageHeight = [NSNumber numberWithFloat: pageSize.height*_pdfView.scaleFactor];
+    result(_pageHeight);
+}
 - (void)getPageCount:(FlutterMethodCall*)call result:(FlutterResult)result {
     _pageCount = [NSNumber numberWithUnsignedLong: [[_pdfView document] pageCount]];
     result(_pageCount);

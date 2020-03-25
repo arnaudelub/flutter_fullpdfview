@@ -31,12 +31,6 @@ class _MyAppState extends State<MyApp> {
         pathPDF = f.path;
       });
     });
-    createFileOfPdfUrl().then((f) {
-      setState(() {
-        pathPDF = f.path;
-        print(pathPDF);
-      });
-    });
   }
 
   Future<File> createFileOfPdfUrl() async {
@@ -203,7 +197,10 @@ class _PDFScreenState extends State<PDFScreen> {
                   label: Text("Go to ${pages ~/ 2}"),
                   onPressed: () async {
                     print(await snapshot.data.getZoom());
-                    await snapshot.data.setPage(pages ~/ 2);
+                    print(await snapshot.data.getPageWidth(1));
+                    print(await snapshot.data.getPageHeight(1));
+                    //await snapshot.data.setPage(pages ~/ 2);
+                    await snapshot.data.resetZoom(1);
                   },
                 );
               }
