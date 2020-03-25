@@ -98,8 +98,9 @@
                 if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
                 {
                              // code for landscape orientation
-                  _pdfView.displayMode = dualPage ? kPDFDisplayTwoUp : kPDFDisplaySinglePageContinuous ;
+                  _pdfView.displayMode = dualPage ? kPDFDisplayTwoUp: kPDFDisplaySinglePageContinuous ;
                   _pdfView.displaysAsBook = dualPage ? YES : NO;
+
                   NSLog(@"In landscape mode");           //
                 }
                 if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation))
@@ -137,13 +138,19 @@
                 }
 
                 CGFloat scale = 1.0f;
+
+                if(!dualPage){
                 if (parentRect.size.width / parentRect.size.height >= pageRect.size.width / pageRect.size.height) {
                     scale = parentRect.size.height / pageRect.size.height;
                 } else {
                     scale = parentRect.size.width / pageRect.size.width;
                 }
+                }else{
+                    NSLog(@"Es dual Page!!!!!");
+                    scale = parentRect.size.width / (parentRect.size.width * 2);
+                }
 
-                NSLog(@"scale %f", scale);
+                NSLog(@"scale %f, parent width: %f, page width: %f, parent height: %f, page height: %f", scale, parentRect.size.width, pageRect.size.width, parentRect.size.height, pageRect.size.height);
 
                 _pdfView.scaleFactor = scale;
 

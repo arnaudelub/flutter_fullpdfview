@@ -1,3 +1,6 @@
+## 1.0.5+4
+Fixing scale on ios in dual page mode
+
 ## 1.0.5+3
 Adding LICENSE
 
