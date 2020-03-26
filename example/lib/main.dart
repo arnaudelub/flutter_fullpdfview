@@ -110,7 +110,6 @@ class _MyAppState extends State<MyApp> {
 
 class PDFScreen extends StatefulWidget {
   final String path;
-
   PDFScreen({Key key, this.path}) : super(key: key);
 
   _PDFScreenState createState() => _PDFScreenState();
@@ -120,6 +119,7 @@ class _PDFScreenState extends State<PDFScreen> {
   int pages = 0;
   bool isReady = false;
   String errorMessage = '';
+  GlobalKey pdfKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -143,14 +143,16 @@ class _PDFScreenState extends State<PDFScreen> {
               Container(
                 color: Colors.black,
                 child: PDFView(
+                  key: pdfKey,
                   filePath: widget.path,
                   fitEachPage: true,
+                  fitPolicy: FitPolicy.BOTH,
                   dualPageMode: false,
                   enableSwipe: true,
                   swipeHorizontal: true,
-                  autoSpacing: false,
+                  autoSpacing: true,
                   pageFling: true,
-                  defaultPage: 8,
+                  defaultPage: 0,
                   pageSnap: true,
                   backgroundColor: bgcolors.BLACK,
                   onRender: (_pages) {

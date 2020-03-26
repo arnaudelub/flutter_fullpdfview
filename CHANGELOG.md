@@ -1,3 +1,9 @@
+## 1.0.6+7
+Android resetZoom
+
+## 1.0.6+6
+Adding fit policy to both on ios
+
 ## 1.0.6+5
 Adding reset zoom for iOS
 

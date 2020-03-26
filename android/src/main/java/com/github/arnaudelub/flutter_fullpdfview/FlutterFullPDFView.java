@@ -175,7 +175,8 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
 
   void resetZoom(MethodCall call, Result result) {
     int page = (int) call.argument("page");
-    pdfView.fitToWidth(page);
+    pdfView.resetZoom();
+    pdfView.jumpTo(page);
     result.success(true);
   }
 

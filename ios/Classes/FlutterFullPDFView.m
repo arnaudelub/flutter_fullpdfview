@@ -90,8 +90,12 @@
                 [_channel invokeMethod:@"onError" arguments:@{@"error" : @"cannot create document: File not in PDF format or corrupted."}];
             } else {
                 _pdfView.autoresizesSubviews = YES;
-                _pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                //_pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
+                _pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+                    | UIViewAutoresizingFlexibleHeight
+                    | UIViewAutoresizingFlexibleTopMargin
+                    | UIViewAutoresizingFlexibleBottomMargin;
                 BOOL swipeHorizontal = [args[@"swipeHorizontal"] boolValue];
                 if (swipeHorizontal) {
                     _pdfView.displayDirection = kPDFDisplayDirectionHorizontal;
@@ -138,7 +142,10 @@
                 CGRect parentRect = [[UIScreen mainScreen] bounds];
 
                 if (frame.size.width > 0 && frame.size.height > 0) {
+                    NSLog(@"Frame size is not 0.....");
                     parentRect = frame;
+                }else {
+                    NSLog(@"FRAME size is 0....");
                 }
 
                 scale = 1.0f;
@@ -232,7 +239,7 @@
 
 - (void)resetZoom:(FlutterMethodCall*)call result:(FlutterResult)result {
     NSLog(@"Scale factore was %f" , _pdfView.scaleFactor);
-    _pdfView.scaleFactor=scale;
+    _pdfView.scaleFactor=_pdfView.scaleFactorForSizeToFit;
 
     NSLog(@"Now it's %f" , _pdfView.scaleFactor);
     result(nil);
