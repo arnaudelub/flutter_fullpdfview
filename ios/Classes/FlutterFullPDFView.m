@@ -91,11 +91,11 @@
             } else {
                 _pdfView.autoresizesSubviews = YES;
                 //_pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-
-                _pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    //                | UIViewAutoresizingFlexibleHeight
-   //                 | UIViewAutoresizingFlexibleTopMargin
-   //                 | UIViewAutoresizingFlexibleBottomMargin;
+                //_pdfView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+                _pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+                    | UIViewAutoresizingFlexibleHeight
+                    | UIViewAutoresizingFlexibleTopMargin
+                    | UIViewAutoresizingFlexibleBottomMargin;
                 BOOL swipeHorizontal = [args[@"swipeHorizontal"] boolValue];
                 if (swipeHorizontal) {
                     _pdfView.displayDirection = kPDFDisplayDirectionHorizontal;
@@ -157,7 +157,7 @@
                     scale = parentRect.size.width / pageRect.size.width;
                 }
                 }else{
-                if (parentRect.size.width / parentRect.size.height >= pageRect.size.width / pageRect.size.height) {
+                if (parentRect.size.width / parentRect.size.height >= pageRect.size.width*2 / pageRect.size.height) {
                     scale = parentRect.size.height / pageRect.size.height;
                 } else {
                     NSLog(@"Es dual Page!!!!!");

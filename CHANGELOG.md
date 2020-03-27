@@ -1,3 +1,6 @@
+## 1.0.7+2
+Fixing dualPageMode for ios, scale calculation wasn't accurate
+
 ## 1.0.7+1
 Updating APV version to 1.3.1, snapEdge was missing in startXAnimation so the page is centered in screen when using jumpTo()
 
