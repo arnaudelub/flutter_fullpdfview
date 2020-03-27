@@ -89,6 +89,17 @@
             if (document == nil) {
                 [_channel invokeMethod:@"onError" arguments:@{@"error" : @"cannot create document: File not in PDF format or corrupted."}];
             } else {
+                _pdfView.document = document;
+
+
+                NSUInteger pageCount = [document pageCount];
+
+                if (pageCount <= defaultPage) {
+                    defaultPage = pageCount - 1;
+                }
+
+                PDFPage* page = [document pageAtIndex: defaultPage];
+                [_pdfView goToPage: page];
                 _pdfView.autoresizesSubviews = YES;
                 //_pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
                 //_pdfView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -96,6 +107,13 @@
                     | UIViewAutoresizingFlexibleHeight
                     | UIViewAutoresizingFlexibleTopMargin
                     | UIViewAutoresizingFlexibleBottomMargin;
+                if([backgroundColor isEqual:  @"black"]) {
+                    _pdfView.backgroundColor =[UIColor blackColor ];
+                }else if([backgroundColor isEqual:  @"white"]){
+                    _pdfView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+                }else {
+                    _pdfView.backgroundColor = [UIColor blackColor];
+                }
                 BOOL swipeHorizontal = [args[@"swipeHorizontal"] boolValue];
                 if (swipeHorizontal) {
                     _pdfView.displayDirection = kPDFDisplayDirectionHorizontal;
@@ -119,24 +137,6 @@
                  NSLog(@"In portrait mode");            //
                 }
                 _pdfView.autoScales = autoSpacing;
-                _pdfView.document = document;
-                if([backgroundColor isEqual:  @"black"]) {
-                    _pdfView.backgroundColor =[UIColor blackColor ];
-                }else if([backgroundColor isEqual:  @"white"]){
-                    _pdfView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-                }else {
-                    _pdfView.backgroundColor = [UIColor blackColor];
-                }
-
-
-                NSUInteger pageCount = [document pageCount];
-
-                if (pageCount <= defaultPage) {
-                    defaultPage = pageCount - 1;
-                }
-
-                PDFPage* page = [document pageAtIndex: defaultPage];
-                [_pdfView goToPage: page];
                 CGRect pageRect = [page boundsForBox:[_pdfView displayBox]];
                 pageSize = CGSizeMake(pageRect.size.width, pageRect.size.height);
                 CGRect parentRect = [[UIScreen mainScreen] bounds];
