@@ -92,10 +92,10 @@
                 _pdfView.autoresizesSubviews = YES;
                 //_pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-                _pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth
-                    | UIViewAutoresizingFlexibleHeight
-                    | UIViewAutoresizingFlexibleTopMargin
-                    | UIViewAutoresizingFlexibleBottomMargin;
+                _pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    //                | UIViewAutoresizingFlexibleHeight
+   //                 | UIViewAutoresizingFlexibleTopMargin
+   //                 | UIViewAutoresizingFlexibleBottomMargin;
                 BOOL swipeHorizontal = [args[@"swipeHorizontal"] boolValue];
                 if (swipeHorizontal) {
                     _pdfView.displayDirection = kPDFDisplayDirectionHorizontal;

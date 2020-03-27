@@ -1,3 +1,6 @@
+## 1.0.7+1
+Updating APV version to 1.3.1, snapEdge was missing in startXAnimation so the page is centered in screen when using jumpTo()
+
 ## 1.0.6+7
 Android resetZoom
 
