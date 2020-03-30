@@ -1,3 +1,18 @@
+## 1.0.7+7
+Fix resetZoom to take snapEdge in account, using zoomToWithAnimation to do so
+
+## 1.0.7+6
+Updating apv version
+
+## 1.0.7+5
+Updating apv version
+
+## 1.0.7+4
+Updating apv version
+
+## 1.0.7+3
+Fixing ios default Page
+
 ## 1.0.7+2
 Fixing dualPageMode for ios, scale calculation wasn't accurate
 
