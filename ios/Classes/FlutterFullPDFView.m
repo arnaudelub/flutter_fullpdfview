@@ -100,16 +100,6 @@
                //     | UIViewAutoresizingFlexibleHeight
                 //    | UIViewAutoresizingFlexibleTopMargin
                  //   | UIViewAutoresizingFlexibleBottomMargin;
-                if([backgroundColor isEqual:  @"black"]) {
-                    NSLog(@"Color is black");
-                    _pdfView.backgroundColor =[UIColor blackColor ];
-                }else if([backgroundColor isEqual:  @"white"]){
-                         NSLog(@"Color is white");
-                    _pdfView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-                }else {
-                    NSLog(@"else color is black");
-                    _pdfView.backgroundColor = [UIColor blackColor];
-                }
                 BOOL swipeHorizontal = [args[@"swipeHorizontal"] boolValue];
                 if (swipeHorizontal) {
                     _pdfView.displayDirection = kPDFDisplayDirectionHorizontal;
@@ -119,18 +109,15 @@
 
                 if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
                 {
-                             // code for landscape orientation
                   _pdfView.displayMode = dualPage ? kPDFDisplayTwoUp: kPDFDisplaySinglePageContinuous ;
                   _pdfView.displaysAsBook = dualPage ? YES : NO;
 
-                  NSLog(@"In landscape mode");           //
                 }
-                if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation))
+                else
                 {
                              // code for Portrait orientation
                     [_pdfView usePageViewController:pageFling withViewOptions:nil];
                     _pdfView.displayMode = enableSwipe  ? kPDFDisplaySinglePageContinuous : kPDFDisplaySinglePage;
-                    NSLog(@"In portrait mode");            //
                 }
                 _pdfView.autoScales = autoSpacing;
                 _pdfView.document = document;
@@ -146,7 +133,6 @@
                 CGRect parentRect = [[UIScreen mainScreen] bounds];
 
                 if (frame.size.width > 0 && frame.size.height > 0) {
-                    NSLog(@"Frame size is not 0.....");
                     parentRect = frame;
                 }else {
                     NSLog(@"FRAME size is 0....");
@@ -165,18 +151,23 @@
                     if (parentRect.size.width / parentRect.size.height >= pageRect.size.width*2 / pageRect.size.height) {
                         scale = parentRect.size.height / pageRect.size.height;
                     } else {
-                        NSLog(@"Es dual Page!!!!!");
                         scale = parentRect.size.width / (parentRect.size.width *2 )  ;
                     }
                 }
 
-                NSLog(@"scale %f, parent width: %f, page width: %f, parent height: %f, page height: %f", scale, parentRect.size.width, pageRect.size.width, parentRect.size.height, pageRect.size.height);
 
                 _pdfView.scaleFactor = scale;
 
                 _pdfView.minScaleFactor = _pdfView.scaleFactorForSizeToFit;
                 _pdfView.maxScaleFactor = 4.0;
 
+                if([backgroundColor isEqual:  @"black"]) {
+                    _pdfView.backgroundColor =[UIColor blackColor ];
+                }else if([backgroundColor isEqual:  @"white"]){
+                    _pdfView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+                }else {
+                    _pdfView.backgroundColor = [UIColor blackColor];
+                }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf handleRenderCompleted:[NSNumber numberWithUnsignedLong: [document pageCount]]];
                 });

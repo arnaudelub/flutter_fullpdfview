@@ -1,3 +1,6 @@
+## 1.0.8+1
+Fixing IOS Class, view is now rendered correctly
+
 ## 1.0.7+8
 Update apv version
 
