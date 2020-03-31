@@ -312,6 +312,16 @@ class PDFViewController {
     return pageHeight;
   }
 
+  Future<double> getScreenWidth() async {
+    final double screenWidth = await _channel.invokeMethod('screenWidth');
+    return screenWidth;
+  }
+
+  Future<double> getScreenHeight() async {
+    final double screenHeight = await _channel.invokeMethod('screenHeight');
+    return screenHeight;
+  }
+
   Future<int> getPageCount() async {
     final int pageCount = await _channel.invokeMethod('pageCount');
     return pageCount;

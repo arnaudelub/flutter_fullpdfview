@@ -1,3 +1,6 @@
+## 1.0.7+8
+Update apv version
+
 ## 1.0.7+7
 Fix resetZoom to take snapEdge in account, using zoomToWithAnimation to do so
 

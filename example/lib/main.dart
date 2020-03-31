@@ -115,11 +115,12 @@ class PDFScreen extends StatefulWidget {
   _PDFScreenState createState() => _PDFScreenState();
 }
 
+//GlobalKey pdfKey = GlobalKey();
+
 class _PDFScreenState extends State<PDFScreen> {
   int pages = 0;
   bool isReady = false;
   String errorMessage = '';
-  GlobalKey pdfKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +144,7 @@ class _PDFScreenState extends State<PDFScreen> {
               Container(
                 color: Colors.black,
                 child: PDFView(
-                  key: pdfKey,
+                  //key: pdfKey,
                   filePath: widget.path,
                   fitEachPage: true,
                   fitPolicy: FitPolicy.BOTH,
@@ -203,6 +204,7 @@ class _PDFScreenState extends State<PDFScreen> {
                     print(await snapshot.data.getPageHeight(1));
                     //await snapshot.data.setPage(pages ~/ 2);
                     await snapshot.data.resetZoom(1);
+                    //print(await snapshot.data.getScreenWidth());
                   },
                 );
               }

@@ -40,7 +40,6 @@
     NSNumber* _zoom;
     NSNumber* _pageWidth;
     NSNumber* _pageHeight;
-    CGFloat scale;
     BOOL _pageFling;
     BOOL _enableSwipe;
     BOOL _dualPage;
@@ -71,10 +70,12 @@
         BOOL autoSpacing = [args[@"autoSpacing"] boolValue];
         BOOL dualPage = [args[@"dualPageMode"] boolValue];
         BOOL pageFling = [args[@"pageFling"] boolValue];
+        NSLog(pageFling ? @"fling YES" : @" fling NO" );
         BOOL enableSwipe = [args[@"enableSwipe"] boolValue];
+        NSLog(enableSwipe ? @"YES" : @"NO" );
         NSInteger defaultPage = [args[@"defaultPage"] integerValue];
         NSString* filePath = args[@"filePath"];
-        NSString *backgroundColor = args[@"backgroundColor"];
+        NSString* backgroundColor = args[@"backgroundColor"];
         UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipe:)];
         swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
         [self.view addGestureRecognizer:swipeLeft];
@@ -89,29 +90,24 @@
             if (document == nil) {
                 [_channel invokeMethod:@"onError" arguments:@{@"error" : @"cannot create document: File not in PDF format or corrupted."}];
             } else {
-                _pdfView.document = document;
 
 
-                NSUInteger pageCount = [document pageCount];
 
-                if (pageCount <= defaultPage) {
-                    defaultPage = pageCount - 1;
-                }
-
-                PDFPage* page = [document pageAtIndex: defaultPage];
-                [_pdfView goToPage: page];
                 _pdfView.autoresizesSubviews = YES;
-                //_pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                _pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
                 //_pdfView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-                _pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth
-                    | UIViewAutoresizingFlexibleHeight
-                    | UIViewAutoresizingFlexibleTopMargin
-                    | UIViewAutoresizingFlexibleBottomMargin;
+                //_pdfView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+               //     | UIViewAutoresizingFlexibleHeight
+                //    | UIViewAutoresizingFlexibleTopMargin
+                 //   | UIViewAutoresizingFlexibleBottomMargin;
                 if([backgroundColor isEqual:  @"black"]) {
+                    NSLog(@"Color is black");
                     _pdfView.backgroundColor =[UIColor blackColor ];
                 }else if([backgroundColor isEqual:  @"white"]){
+                         NSLog(@"Color is white");
                     _pdfView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
                 }else {
+                    NSLog(@"else color is black");
                     _pdfView.backgroundColor = [UIColor blackColor];
                 }
                 BOOL swipeHorizontal = [args[@"swipeHorizontal"] boolValue];
@@ -132,11 +128,19 @@
                 if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation))
                 {
                              // code for Portrait orientation
+                    [_pdfView usePageViewController:pageFling withViewOptions:nil];
                     _pdfView.displayMode = enableSwipe  ? kPDFDisplaySinglePageContinuous : kPDFDisplaySinglePage;
-                [_pdfView usePageViewController:pageFling withViewOptions:nil];
-                 NSLog(@"In portrait mode");            //
+                    NSLog(@"In portrait mode");            //
                 }
                 _pdfView.autoScales = autoSpacing;
+                _pdfView.document = document;
+                NSUInteger pageCount = [document pageCount];
+
+                if (pageCount <= defaultPage) {
+                    defaultPage = pageCount - 1;
+                }
+                PDFPage* page = [document pageAtIndex: defaultPage];
+                [_pdfView goToPage: page];
                 CGRect pageRect = [page boundsForBox:[_pdfView displayBox]];
                 pageSize = CGSizeMake(pageRect.size.width, pageRect.size.height);
                 CGRect parentRect = [[UIScreen mainScreen] bounds];
@@ -148,21 +152,22 @@
                     NSLog(@"FRAME size is 0....");
                 }
 
+                CGFloat scale;
                 scale = 1.0f;
 
                 if(!dualPage){
-                if (parentRect.size.width / parentRect.size.height >= pageRect.size.width / pageRect.size.height) {
-                    scale = parentRect.size.height / pageRect.size.height;
-                } else {
-                    scale = parentRect.size.width / pageRect.size.width;
-                }
+                    if (parentRect.size.width / parentRect.size.height >= pageRect.size.width / pageRect.size.height) {
+                        scale = parentRect.size.height / pageRect.size.height;
+                    } else {
+                        scale = parentRect.size.width / pageRect.size.width;
+                    }
                 }else{
-                if (parentRect.size.width / parentRect.size.height >= pageRect.size.width*2 / pageRect.size.height) {
-                    scale = parentRect.size.height / pageRect.size.height;
-                } else {
-                    NSLog(@"Es dual Page!!!!!");
-                    scale = parentRect.size.width / (parentRect.size.width *2 )  ;
-                }
+                    if (parentRect.size.width / parentRect.size.height >= pageRect.size.width*2 / pageRect.size.height) {
+                        scale = parentRect.size.height / pageRect.size.height;
+                    } else {
+                        NSLog(@"Es dual Page!!!!!");
+                        scale = parentRect.size.width / (parentRect.size.width *2 )  ;
+                    }
                 }
 
                 NSLog(@"scale %f, parent width: %f, page width: %f, parent height: %f, page height: %f", scale, parentRect.size.width, pageRect.size.width, parentRect.size.height, pageRect.size.height);
@@ -245,15 +250,11 @@
     result(nil);
 }
 - (void)getPageWidth:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSDictionary<NSString*, NSNumber*>* arguments = [call arguments];
-    NSNumber* page = arguments[@"page"];
     _pageWidth = [NSNumber numberWithFloat: pageSize.width*_pdfView.scaleFactor];
     result(_pageWidth);
 }
 
 - (void)getPageHeight:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSDictionary<NSString*, NSNumber*>* arguments = [call arguments];
-    NSNumber* page = arguments[@"page"];
     _pageHeight = [NSNumber numberWithFloat: pageSize.height*_pdfView.scaleFactor];
     result(_pageHeight);
 }
@@ -290,7 +291,7 @@
 - (void) orientationChanged:(NSNotification *)note
 {
        UIDevice * device = note.object;
-        _pdfView.autoScales = YES;
+        //_pdfView.autoScales = YES;
        NSLog(@"orientation changed");
           switch(device.orientation)
           {
