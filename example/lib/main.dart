@@ -219,12 +219,13 @@ class _PDFScreenState extends State<PDFScreen> {
           filePath: widget.path,
           fitEachPage: false,
           dualPageMode: true,
+          displayAsBook: false,
           enableSwipe: true,
           swipeHorizontal: true,
           autoSpacing: false,
           pageFling: true,
           defaultPage: 0,
-          pageSnap: false,
+          pageSnap: true,
           backgroundColor: bgcolors.BLACK,
           onRender: (_pages) {
             print("OK RENDERED!!!!!");

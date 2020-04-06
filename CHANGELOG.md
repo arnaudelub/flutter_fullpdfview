@@ -1,3 +1,6 @@
+## 1.0.9+1
+Adding displayAsBook capabalitity, se to true to show the first and last page as cover (alone)
+
 ## 1.0.8+1
 Fixing IOS Class, view is now rendered correctly
 

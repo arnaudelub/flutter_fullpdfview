@@ -43,6 +43,7 @@
     BOOL _pageFling;
     BOOL _enableSwipe;
     BOOL _dualPage;
+    BOOL _hasCover;
     CGSize pageSize;
 }
 
@@ -69,6 +70,7 @@
            object:[UIDevice currentDevice]];
         BOOL autoSpacing = [args[@"autoSpacing"] boolValue];
         BOOL dualPage = [args[@"dualPageMode"] boolValue];
+        BOOL showCover = [args[@"showCover"] boolValue];
         BOOL pageFling = [args[@"pageFling"] boolValue];
         NSLog(pageFling ? @"fling YES" : @" fling NO" );
         BOOL enableSwipe = [args[@"enableSwipe"] boolValue];
@@ -110,7 +112,10 @@
                 if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
                 {
                   _pdfView.displayMode = dualPage ? kPDFDisplayTwoUp: kPDFDisplaySinglePageContinuous ;
-                  _pdfView.displaysAsBook = dualPage ? YES : NO;
+                  _pdfView.displaysAsBook = dualPage
+                      ? showCover
+                        ? YES : NO
+                      : NO;
 
                 }
                 else

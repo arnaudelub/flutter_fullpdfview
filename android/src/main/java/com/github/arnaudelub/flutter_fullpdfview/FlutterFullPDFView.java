@@ -42,12 +42,13 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
       int orientation = context.getResources().getConfiguration().orientation;
       isLandscape = orientation == Configuration.ORIENTATION_LANDSCAPE;
       boolean dualMode = getBoolean(params, "dualPageMode");
-
+      boolean showCover = getBoolean(params, "showCover");
       pdfView
           .fromFile(file)
           .landscapeOrientation(isLandscape)
           .enableAnnotationRendering(true)
           .dualPageMode(getBoolean(params, "dualPageMode"))
+          .displayAsBook(showCover)
           .enableSwipe(getBoolean(params, "enableSwipe"))
           // .pageFitPolicy(getFitPolicy(params))
           .pageFitPolicy(FitPolicy.BOTH)
