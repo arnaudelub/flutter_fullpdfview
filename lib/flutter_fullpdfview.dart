@@ -26,6 +26,7 @@ class PDFView extends StatefulWidget {
     this.gestureRecognizers,
     this.dualPageMode = false,
     this.displayAsBook = false,
+    this.dualPageWithBreak = false,
     this.fitPolicy = FitPolicy.BOTH,
     this.fitEachPage = true,
     this.enableSwipe = true,
@@ -74,6 +75,7 @@ class PDFView extends StatefulWidget {
   final int defaultPage;
   final bool dualPageMode;
   final bool displayAsBook;
+  final bool dualPageWithBreak;
   final bgcolors backgroundColor;
 }
 
@@ -162,6 +164,7 @@ class _PDFViewSettings {
     this.dualPageMode,
     this.displayAsBook,
     this.backgroundColor,
+    this.dualPageWithBreak,
   });
 
   static _PDFViewSettings fromWidget(PDFView widget) {
@@ -178,6 +181,7 @@ class _PDFViewSettings {
       defaultPage: widget.defaultPage,
       dualPageMode: widget.dualPageMode,
       displayAsBook: widget.displayAsBook,
+      dualPageWithBreak: widget.dualPageWithBreak,
       backgroundColor: convertTtoString(widget.backgroundColor),
     );
   }
@@ -194,6 +198,7 @@ class _PDFViewSettings {
   final int defaultPage;
   final bool dualPageMode;
   final bool displayAsBook;
+  final bool dualPageWithBreak;
   final String backgroundColor;
 
   static String convertTtoString(bgcolors bg) {
@@ -224,6 +229,7 @@ class _PDFViewSettings {
       'pageSnap': pageSnap,
       'defaultPage': defaultPage,
       'dualPageMode': dualPageMode,
+      'dualPageWithBreak': dualPageWithBreak,
       'showCover': displayAsBook,
       'backgroundColor': backgroundColor,
     };

@@ -48,13 +48,14 @@ import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 | onRender           |   ✅    | ✅  |
 | onPageChanged      |   ✅    | ✅  |
 | onError            |   ✅    | ✅  |
-| onPageError        |   ✅    | ❌  |
+| onPageError        |   ✅    | ❌❌  |
 | gestureRecognizers |   ✅    | ✅
 | filePath           |   ✅    | ✅
 | fitEachPage        |   ✅    | ✅
 | defaultPage        |   ✅    | ✅
 | dualPageMode       |   ✅    |  ✅ |
 | displayAsBook      |   ✅    |  ✅ |
+| dualPageWithBrea  |    ❌   |  ✅ |
 | enableSwipe        |   ✅    | ✅  |
 | swipeHorizontal    |   ✅    | ✅  |
 | password           |   ✅    |  ✅  |

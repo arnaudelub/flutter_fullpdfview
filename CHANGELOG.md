@@ -1,3 +1,9 @@
+## 1.0.9+3
+Adding dualPageWithBreak that will displays or not a break between the 2 pages in dualPage mode
+
+## 1.0.9+2
+Fixing ios viewer
+
 ## 1.0.9+1
 Adding displayAsBook capabalitity, se to true to show the first and last page as cover (alone)
 
