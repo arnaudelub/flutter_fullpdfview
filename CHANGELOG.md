@@ -1,3 +1,9 @@
+## 1.0.11
+Updating APV version to 1.4.1
+
+## 1.0.10
+Updating APV version to 1.4.0
+
 ## 1.0.9+3
 Adding dualPageWithBreak that will displays or not a break between the 2 pages in dualPage mode
 

@@ -44,28 +44,28 @@ import 'package:flutter_fullpdfview/flutter_fullpdfview.dart';
 
 | Name               | Android | iOS |
 | :----------------- | :-----: | :-: |
-| onViewCreated      |   ✅    | ✅  |
-| onRender           |   ✅    | ✅  |
-| onPageChanged      |   ✅    | ✅  |
-| onError            |   ✅    | ✅  |
-| onPageError        |   ✅    | ❌❌  |
-| gestureRecognizers |   ✅    | ✅
-| filePath           |   ✅    | ✅
-| fitEachPage        |   ✅    | ✅
-| defaultPage        |   ✅    | ✅
-| dualPageMode       |   ✅    |  ✅ |
-| displayAsBook      |   ✅    |  ✅ |
-| dualPageWithBrea  |    ❌   |  ✅ |
-| enableSwipe        |   ✅    | ✅  |
-| swipeHorizontal    |   ✅    | ✅  |
-| password           |   ✅    |  ✅  |
-| nightMode          |   ✅    |  ❌  |
-| password           |   ✅    | ✅ |
-| autoSpacing        |   ✅    | ✅ |
-| pageFling          |   ✅    |  ✅ |
-| pageSnap           |   ✅    || ❌
-| backgroundColor   |   ✅    |  ✅|
-| fitPolicy   |   ✅    |    ❌|
+| onViewCreated      |   V     |  V  |
+| onRender           |   V     |  V  |
+| onPageChanged      |   V     |  V  |
+| onError            |   V     |  V  |
+| onPageError        |   V     |  X  |
+| gestureRecognizers |   V     |  V  |
+| filePath           |   V     |  V  |
+| fitEachPage        |   V     |  V  |
+| defaultPage        |   V     |  V  |
+| dualPageMode       |   V     |  V  |
+| displayAsBook      |   V     |  V  |
+| dualPageWithBreak  |   V     |  V  |
+| enableSwipe        |   V     |  V  |
+| swipeHorizontal    |   V     |  V  |
+| password           |   V     |  V  |
+| nightMode          |   V     |  X  |
+| password           |   V     |  V  |
+| autoSpacing        |   V     |  V  |
+| pageFling          |   V     |  V  |
+| pageSnap           |   V     |  V  |
+| backgroundColor    |   V     |  V  |
+| fitPolicy          |   V     |  X  |
 
 Only black and white are supported on Android and iOS at the moment!
 
