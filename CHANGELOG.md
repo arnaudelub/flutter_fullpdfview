@@ -1,3 +1,6 @@
+## 1.0.12
+Fixing resetZoom capabalitity in portrait mode
+
 ## 1.0.11
 Updating APV version to 1.4.1
 
