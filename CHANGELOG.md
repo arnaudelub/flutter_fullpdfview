@@ -1,5 +1,6 @@
-## 1.0.12
-Fixing resetZoom capabalitity in portrait mode
+## 1.1.0
+Adding zoom listener to be able to know the scale at every moment.
+APV updated to version 1.5.1
 
 ## 1.0.11
 Updating APV version to 1.4.1

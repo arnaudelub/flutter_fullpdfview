@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 typedef void PDFViewCreatedCallback(PDFViewController controller);
 typedef void RenderCallback(int pages);
 typedef void PageChangedCallback(int page, int total);
+typedef void ZoomChangedCallback(double zoom);
 typedef void ErrorCallback(dynamic error);
 typedef void PageErrorCallback(int page, dynamic error);
 
@@ -23,6 +24,7 @@ class PDFView extends StatefulWidget {
     this.onPageChanged,
     this.onError,
     this.onPageError,
+    this.onZoomChanged,
     this.gestureRecognizers,
     this.dualPageMode = false,
     this.displayAsBook = false,
@@ -47,6 +49,7 @@ class PDFView extends StatefulWidget {
   final PDFViewCreatedCallback onViewCreated;
   final RenderCallback onRender;
   final PageChangedCallback onPageChanged;
+  final ZoomChangedCallback onZoomChanged;
   final ErrorCallback onError;
   final PageErrorCallback onPageError;
 
@@ -283,7 +286,6 @@ class PDFViewController {
     switch (call.method) {
       case 'onRender':
         if (_widget.onRender != null) {
-          print("onRender != null !!!!!!!!!!!!!!");
           _widget.onRender(call.arguments['pages']);
         }
 
@@ -306,6 +308,12 @@ class PDFViewController {
           _widget.onPageError(call.arguments['page'], call.arguments['error']);
         }
 
+        return null;
+
+      case 'onZoomChanged':
+        if (_widget.onZoomChanged != null) {
+          _widget.onZoomChanged(call.arguments['zoom']);
+        }
         return null;
     }
     throw MissingPluginException(

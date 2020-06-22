@@ -70,6 +70,16 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
                   methodChannel.invokeMethod("onPageChanged", args);
                 }
               })
+           .onZoomChange(
+                   new OnZoomChangeListener(){
+                     @Override
+                     public void onZoomChanged(double zoom) {
+                       Map<String, Object> args = new HashMap<>();
+                       args.put("zoom", zoom);
+                       methodChannel.invokeMethod("onZoomChanged", args);
+                     }
+                   }
+           )
           .onError(
               new OnErrorListener() {
                 @Override

@@ -33,5 +33,5 @@ android {
     }
 }
 dependencies {
-    implementation 'com.github.arnaudelub.apv:apv:1.4.1'
+    implementation 'com.github.arnaudelub.apv:apv:1.5.2'
 }

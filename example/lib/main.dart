@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
         corruptedPathPDF = f.path;
       });
     });
-    fromAsset('assets/demo.pdf', 'demo.pdf').then((f) {
+    fromAsset('assets/sample.pdf', 'sample.pdf').then((f) {
       setState(() {
         pathPDF = f.path;
       });
@@ -143,44 +143,46 @@ class _PDFScreenState extends State<PDFScreen> {
               Container(
                 color: Colors.black,
                 child: PDFView(
-                  key: pdfKey,
-                  filePath: widget.path,
-                  fitEachPage: true,
-                  fitPolicy: FitPolicy.BOTH,
-                  dualPageMode: false,
-                  enableSwipe: true,
-                  swipeHorizontal: true,
-                  autoSpacing: true,
-                  pageFling: true,
-                  defaultPage: 8,
-                  pageSnap: true,
-                  backgroundColor: bgcolors.BLACK,
-                  onRender: (_pages) {
-                    print("OK RENDERED!!!!!");
-                    setState(() {
-                      pages = _pages;
-                      isReady = true;
-                    });
-                  },
-                  onError: (error) {
-                    setState(() {
-                      errorMessage = error.toString();
-                    });
-                    print(error.toString());
-                  },
-                  onPageError: (page, error) {
-                    setState(() {
-                      errorMessage = '$page: ${error.toString()}';
-                    });
-                    print('$page: ${error.toString()}');
-                  },
-                  onViewCreated: (PDFViewController pdfViewController) {
-                    _controller.complete(pdfViewController);
-                  },
-                  onPageChanged: (int page, int total) {
-                    print('page change: $page/$total');
-                  },
-                ),
+                    key: pdfKey,
+                    filePath: widget.path,
+                    fitEachPage: true,
+                    fitPolicy: FitPolicy.BOTH,
+                    dualPageMode: false,
+                    enableSwipe: true,
+                    swipeHorizontal: true,
+                    autoSpacing: true,
+                    pageFling: true,
+                    defaultPage: 8,
+                    pageSnap: true,
+                    backgroundColor: bgcolors.BLACK,
+                    onRender: (_pages) {
+                      print("OK RENDERED!!!!!");
+                      setState(() {
+                        pages = _pages;
+                        isReady = true;
+                      });
+                    },
+                    onError: (error) {
+                      setState(() {
+                        errorMessage = error.toString();
+                      });
+                      print(error.toString());
+                    },
+                    onPageError: (page, error) {
+                      setState(() {
+                        errorMessage = '$page: ${error.toString()}';
+                      });
+                      print('$page: ${error.toString()}');
+                    },
+                    onViewCreated: (PDFViewController pdfViewController) {
+                      _controller.complete(pdfViewController);
+                    },
+                    onPageChanged: (int page, int total) {
+                      print('page change: $page/$total');
+                    },
+                    onZoomChanged: (double zoom) {
+                      print("Zoom is now $zoom");
+                    }),
               ),
               errorMessage.isEmpty
                   ? !isReady
