@@ -1,6 +1,6 @@
 ## 1.1.0
 Adding zoom listener to be able to know the scale at every moment.
-APV updated to version 1.5.1
+APV updated to version 1.5.2 and link issue has been fixed
 
 ## 1.0.11
 Updating APV version to 1.4.1
