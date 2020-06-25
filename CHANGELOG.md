@@ -1,3 +1,6 @@
+## 1.1.1
+Fixing iOS NSNotificationScaleChangedNotification listener
+
 ## 1.1.0
 Adding zoom listener to be able to know the scale at every moment.
 APV updated to version 1.5.2 and link issue has been fixed

@@ -206,7 +206,7 @@
 
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePageChanged:) name:PDFViewPageChangedNotification object:_pdfView];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleZoomChanged:) name:PDFViewZoomChangedNotification object:_pdfView];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleZoomChanged:) name:PDFViewScaleChangedNotification object:_pdfView];
 
 
     }
@@ -302,8 +302,8 @@
     [_channel invokeMethod:@"onRender" arguments:@{@"pages" : pages}];
 }
 
--(void)handleZoomChanged(NSNotification*) notification {
-    [_channel invokeMethod:@"onZoomChanged" arguements: @{@"zoom": [NSNumber numberWithFloat: _pdfView.scaleFactor]}];
+-(void)handleZoomChanged:(NSNotification*)notification {
+    [_channel invokeMethod:@"onZoomChanged" arguments: @{@"zoom": [NSNumber numberWithFloat: _pdfView.scaleFactor]}];
 }
 
 - (void) orientationChanged:(NSNotification *)note
