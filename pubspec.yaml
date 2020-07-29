@@ -1,6 +1,6 @@
 name: flutter_fullpdfview
 description: A Pdf Viewer for Android and IOS including fit policy. Based on flutter_pdfview from endigo.
-version: 1.1.3
+version: 1.1.4
 verified publisher: candelub.eu
 homepage: https://github.com/arnaudelub/flutter_fullpdfview
 
@@ -33,6 +33,7 @@ flutter:
     #    pluginClass: FlutterFullpdfviewPlugin
     #  ios:
     #    pluginClass: FlutterFullpdfviewPlugin
+
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

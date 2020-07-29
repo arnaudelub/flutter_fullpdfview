@@ -375,6 +375,14 @@ class PDFViewController {
     return isSet;
   }
 
+  Future<bool> setZoom(double zoom) async {
+    print("setting zoom to $zoom");
+    final bool isSet = await _channel.invokeMethod('setZoom', <String, dynamic>{
+      'newzoom': zoom,
+    });
+    return isSet;
+  }
+
   Future<double> getZoom() async {
     final double zoom = await _channel.invokeMethod('currentZoom');
     return zoom;

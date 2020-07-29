@@ -23,7 +23,7 @@ with Flutter:
 $ flutter packages get
 ```
 
-Alternatively, your editor might support pub get or `flutter packages get`. Check the docs for your editor to learn more.
+Alternatively, your editor might support pub get or `flutter pub get`. Check the docs for your editor to learn more.
 
 ### 3. Setup
 
@@ -79,6 +79,7 @@ Only black and white are supported on Android and iOS at the moment!
 | setPageWithAnimation |    Go to/Set page            | `int page`     | `Future<bool>` |
 | resetZoom            |    Go page and fitToWidth    | `int page`     | `Future<bool>` |
 | getZoom              |    Get the current zoom      | `double zoom`  | `Future<double>` |
+| setZoom              |    Set the current zoom      | `double zoom`  | `Future<double>` |
 | getPageWidth         |    Get the pdf width         | `double width` |  `Future<double>` |
 | getPageHeight        |    Get the pdf height        | `double height`| `Future<double>` |
 
