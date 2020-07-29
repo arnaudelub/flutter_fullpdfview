@@ -1,4 +1,4 @@
-## 1.1.3
+## 1.1.4
 Adding setZoom to controller to be able to set the zoom programatically
 
 ## 1.1.2
