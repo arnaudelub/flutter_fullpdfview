@@ -247,6 +247,9 @@
         [self onUpdateSettings:call result:result];
     } else if ([[call method] isEqualToString:@"currentZoom"]) {
         [self getZoom:call result:result];
+    } else if ([[call method] isEqualToString:@"setZoom"]) {
+        [self setZoom:call result:result];
+
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -255,6 +258,13 @@
 - (void)getZoom:(FlutterMethodCall*)call result:(FlutterResult)result {
     _zoom = [NSNumber numberWithFloat: _pdfView.scaleFactor];
     result(_zoom);
+}
+
+- (void)setZoom:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSDictionary<NSString*, NSNumber*>* arguments = [call arguments];
+    NSNumber* newZoom = arguments[@"newzoom"];
+    _pdfView.scaleFactor = newZoom
+    result(nil);
 }
 
 - (void)resetZoom:(FlutterMethodCall*)call result:(FlutterResult)result {

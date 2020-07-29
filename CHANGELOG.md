@@ -1,3 +1,8 @@
+## 1.1.3
+Adding setZoom to controller to be able to set the zoom programatically
+
+## 1.1.2
+revert plugin declaration with platforms
 ## 1.1.1
 Fixing iOS NSNotificationScaleChangedNotification listener
 

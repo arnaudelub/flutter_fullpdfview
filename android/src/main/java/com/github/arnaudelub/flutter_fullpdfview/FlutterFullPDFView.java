@@ -149,6 +149,9 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
       case "resetZoom":
         resetZoom(methodCall, result);
         break;
+      case "setZoom":
+        setZoom(methodCall, result);
+        break;
       case "currentZoom":
         getZoom(result);
         break;
@@ -204,6 +207,14 @@ public class FlutterFullPDFView implements PlatformView, MethodCallHandler {
     int page = (int) call.argument("page");
     pdfView.resetZoomWithAnimation();
     result.success(true);
+  }
+
+  void setZoom(MethodCall call, Result result) {
+    double zoom = (double) call.argument("newzoom");
+    Log.i("ZOOOOM", "setting zoom to " + zoom);
+    pdfView.zoomWithAnimation((float) zoom);
+    result.success(true);
+
   }
 
   void getZoom(Result result) {

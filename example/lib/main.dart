@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
         corruptedPathPDF = f.path;
       });
     });
-    fromAsset('assets/sample.pdf', 'sample.pdf').then((f) {
+    fromAsset('assets/demo.pdf', 'sample.pdf').then((f) {
       setState(() {
         pathPDF = f.path;
       });
@@ -120,7 +120,10 @@ class _PDFScreenState extends State<PDFScreen> {
   bool isReady = false;
   String errorMessage = '';
   GlobalKey pdfKey = GlobalKey();
-
+  bool isActive = true;
+  double scale = 1.0;
+  double top = 200.0;
+  double initialLocalFocalPoint;
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(
@@ -205,6 +208,7 @@ class _PDFScreenState extends State<PDFScreen> {
                     print(await snapshot.data.getPageHeight(1));
                     //await snapshot.data.setPage(pages ~/ 2);
                     await snapshot.data.resetZoom(1);
+                    await snapshot.data.setZoom(3.0);
                     //print(await snapshot.data.getScreenWidth());
                   },
                 );
