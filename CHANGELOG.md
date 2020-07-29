@@ -1,3 +1,6 @@
+## 1.1.2
+Removing supported platform in pubspec.yaml, make the app crash, maybe due to pubspec.lock
+
 ## 1.1.1
 Fixing iOS NSNotificationScaleChangedNotification listener
 
