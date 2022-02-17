@@ -5,7 +5,7 @@ verified publisher: candelub.eu
 homepage: https://github.com/arnaudelub/flutter_fullpdfview
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   #flutter: ">=1.12.0 <2.0.0"
 dependencies:
   flutter:
@@ -33,7 +33,6 @@ flutter:
     #    pluginClass: FlutterFullpdfviewPlugin
     #  ios:
     #    pluginClass: FlutterFullpdfviewPlugin
-
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
