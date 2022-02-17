@@ -1,24 +1,27 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
-typedef void PDFViewCreatedCallback(PDFViewController controller);
-typedef void RenderCallback(int pages);
-typedef void PageChangedCallback(int page, int total);
-typedef void ZoomChangedCallback(double zoom);
-typedef void ErrorCallback(dynamic error);
-typedef void PageErrorCallback(int page, dynamic error);
+typedef PDFViewCreatedCallback = void Function(PDFViewController controller);
+typedef RenderCallback = void Function(int? pages);
+typedef PageChangedCallback = void Function(int? page, int? total);
+typedef ErrorCallback = void Function(dynamic error);
+typedef PageErrorCallback = void Function(int? page, dynamic error);
+typedef LinkHandlerCallback = void Function(String? uri);
+typedef ZoomChangedCallback = void Function(double? zoom);
 
 enum bgcolors { BLACK, WHITE, CYAN, BLUE }
 enum FitPolicy { WIDTH, HEIGHT, BOTH }
 
 class PDFView extends StatefulWidget {
   const PDFView({
-    Key key,
-    @required this.filePath,
+    Key? key,
+    this.filePath,
+    this.pdfData,
     this.onViewCreated,
     this.onRender,
     this.onPageChanged,
@@ -46,12 +49,12 @@ class PDFView extends StatefulWidget {
   _PDFViewState createState() => _PDFViewState();
 
   /// If not null invoked once the web view is created.
-  final PDFViewCreatedCallback onViewCreated;
-  final RenderCallback onRender;
-  final PageChangedCallback onPageChanged;
-  final ZoomChangedCallback onZoomChanged;
-  final ErrorCallback onError;
-  final PageErrorCallback onPageError;
+  final PDFViewCreatedCallback? onViewCreated;
+  final RenderCallback? onRender;
+  final PageChangedCallback? onPageChanged;
+  final ZoomChangedCallback? onZoomChanged;
+  final ErrorCallback? onError;
+  final PageErrorCallback? onPageError;
 
   /// Which gestures should be consumed by the pdf view.
   ///
@@ -62,15 +65,17 @@ class PDFView extends StatefulWidget {
   ///
   /// When this set is empty or null, the pdf view will only handle pointer events for gestures that
   /// were not claimed by any other gesture recognizer.
-  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
+  final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
   /// The initial URL to load.
-  final String filePath;
-  final FitPolicy fitPolicy;
+  final String? filePath;
+  final Uint8List? pdfData;
+
+  final FitPolicy? fitPolicy;
   final bool fitEachPage;
   final bool enableSwipe;
   final bool swipeHorizontal;
-  final String password;
+  final String? password;
   final bool nightMode;
   final bool autoSpacing;
   final bool pageFling;
@@ -112,7 +117,7 @@ class _PDFViewState extends State<PDFView> {
     final PDFViewController controller = PDFViewController._(id, widget);
     _controller.complete(controller);
     if (widget.onViewCreated != null) {
-      widget.onViewCreated(controller);
+      widget.onViewCreated!(controller);
     }
   }
 
@@ -127,26 +132,30 @@ class _PDFViewState extends State<PDFView> {
 class _CreationParams {
   _CreationParams({
     this.filePath,
+    this.pdfData,
     this.settings,
   });
 
   static _CreationParams fromWidget(PDFView widget) {
     return _CreationParams(
       filePath: widget.filePath,
+      pdfData: widget.pdfData,
       settings: _PDFViewSettings.fromWidget(widget),
     );
   }
 
-  final String filePath;
+  final String? filePath;
+  final Uint8List? pdfData;
 
-  final _PDFViewSettings settings;
+  final _PDFViewSettings? settings;
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> params = {
       'filePath': filePath,
+      'pdfData': pdfData,
     };
 
-    params.addAll(settings.toMap());
+    params.addAll(settings!.toMap());
 
     return params;
   }
@@ -168,6 +177,7 @@ class _PDFViewSettings {
     this.displayAsBook,
     this.backgroundColor,
     this.dualPageWithBreak,
+    this.preventLinkNavigation,
   });
 
   static _PDFViewSettings fromWidget(PDFView widget) {
@@ -189,20 +199,21 @@ class _PDFViewSettings {
     );
   }
 
-  final bool enableSwipe;
-  final FitPolicy fitPolicy;
-  final bool fitEachPage;
-  final bool swipeHorizontal;
-  final String password;
-  final bool nightMode;
-  final bool autoSpacing;
-  final bool pageFling;
-  final bool pageSnap;
-  final int defaultPage;
-  final bool dualPageMode;
-  final bool displayAsBook;
-  final bool dualPageWithBreak;
-  final String backgroundColor;
+  final bool? enableSwipe;
+  final bool? swipeHorizontal;
+  final String? password;
+  final bool? nightMode;
+  final bool? autoSpacing;
+  final bool? pageFling;
+  final bool? pageSnap;
+  final int? defaultPage;
+  final FitPolicy? fitPolicy;
+  final bool? fitEachPage;
+  final bool? preventLinkNavigation;
+  final bool? dualPageMode;
+  final bool? displayAsBook;
+  final bool? dualPageWithBreak;
+  final String? backgroundColor;
 
   static String convertTtoString(bgcolors bg) {
     switch (bg) {
@@ -277,42 +288,44 @@ class PDFViewController {
 
   final MethodChannel _channel;
 
-  _PDFViewSettings _settings;
+  late _PDFViewSettings _settings;
 
   PDFView _widget;
 
-  Future<bool> _onMethodCall(MethodCall call) async {
-    print([call.method, call.arguments]);
+  Future<bool?> _onMethodCall(MethodCall call) async {
     switch (call.method) {
       case 'onRender':
         if (_widget.onRender != null) {
-          _widget.onRender(call.arguments['pages']);
+          _widget.onRender!(call.arguments['pages'] as int);
         }
 
         return null;
       case 'onPageChanged':
         if (_widget.onPageChanged != null) {
-          _widget.onPageChanged(
-              call.arguments['page'], call.arguments['total']);
+          _widget.onPageChanged!(
+            call.arguments['page'] as int,
+            call.arguments['total'] as int,
+          );
         }
 
         return null;
       case 'onError':
         if (_widget.onError != null) {
-          _widget.onError(call.arguments['error']);
+          _widget.onError!(call.arguments['error']);
         }
 
         return null;
       case 'onPageError':
         if (_widget.onPageError != null) {
-          _widget.onPageError(call.arguments['page'], call.arguments['error']);
+          _widget.onPageError!(
+              call.arguments['page'] as int, call.arguments['error']);
         }
 
         return null;
 
       case 'onZoomChanged':
         if (_widget.onZoomChanged != null) {
-          _widget.onZoomChanged(call.arguments['zoom']);
+          _widget.onZoomChanged!(call.arguments['zoom'] as double);
         }
         return null;
     }
@@ -320,71 +333,73 @@ class PDFViewController {
         '${call.method} was invoked but has no handler');
   }
 
-  Future<double> getPageWidth(int page) async {
-    final double pageWidth = await _channel
+  Future<double?> getPageWidth(int page) async {
+    final double? pageWidth = await _channel
         .invokeMethod('pageWidth', <String, dynamic>{'page': page});
     return pageWidth;
   }
 
-  Future<double> getPageHeight(int page) async {
-    final double pageHeight = await _channel
+  Future<double?> getPageHeight(int page) async {
+    final double? pageHeight = await _channel
         .invokeMethod('pageHeight', <String, dynamic>{'page': page});
     return pageHeight;
   }
 
-  Future<double> getScreenWidth() async {
-    final double screenWidth = await _channel.invokeMethod('screenWidth');
+  Future<double?> getScreenWidth() async {
+    final double? screenWidth = await _channel.invokeMethod('screenWidth');
     return screenWidth;
   }
 
-  Future<double> getScreenHeight() async {
-    final double screenHeight = await _channel.invokeMethod('screenHeight');
+  Future<double?> getScreenHeight() async {
+    final double? screenHeight = await _channel.invokeMethod('screenHeight');
     return screenHeight;
   }
 
-  Future<int> getPageCount() async {
-    final int pageCount = await _channel.invokeMethod('pageCount');
+  Future<int?> getPageCount() async {
+    final int? pageCount = await _channel.invokeMethod('pageCount');
     return pageCount;
   }
 
-  Future<int> getCurrentPage() async {
-    final int currentPage = await _channel.invokeMethod('currentPage');
+  Future<int?> getCurrentPage() async {
+    final int? currentPage = await _channel.invokeMethod('currentPage');
     return currentPage;
   }
 
-  Future<bool> setPage(int page) async {
-    final bool isSet = await _channel.invokeMethod('setPage', <String, dynamic>{
+  Future<bool?> setPage(int page) async {
+    final bool? isSet =
+        await _channel.invokeMethod('setPage', <String, dynamic>{
       'page': page,
     });
     return isSet;
   }
 
-  Future<bool> setPageWithAnimation(int page) async {
-    final bool isSet =
+  Future<bool?> setPageWithAnimation(int page) async {
+    final bool? isSet =
         await _channel.invokeMethod('setPageWithAnimation', <String, dynamic>{
       'page': page,
     });
     return isSet;
   }
 
-  Future<bool> resetZoom(int page) async {
-    final bool isSet =
+  Future<bool?> resetZoom(int page) async {
+    final bool? isSet =
         await _channel.invokeMethod('resetZoom', <String, dynamic>{
       'page': page,
     });
     return isSet;
   }
 
-  Future<bool> setZoom(double zoom) async {
+  Future<bool?> setZoom(double zoom) async {
     print("setting zoom to $zoom");
-    final bool isSet = await _channel.invokeMethod('setZoom', <String, dynamic>{
+    final bool? isSet =
+        await _channel.invokeMethod('setZoom', <String, dynamic>{
       'newzoom': zoom,
     });
     return isSet;
   }
 
-  Future<double> getZoom() async {
-    final double zoom = await _channel.invokeMethod('currentZoom');
+  Future<double?> getZoom() async {
+    final double? zoom = await _channel.invokeMethod('currentZoom');
     return zoom;
   }
 
@@ -395,7 +410,7 @@ class PDFViewController {
 
   Future<void> _updateSettings(_PDFViewSettings setting) async {
     final Map<String, dynamic> updateMap = _settings.updatesMap(setting);
-    if (updateMap == null || updateMap.isEmpty) {
+    if (updateMap.isEmpty) {
       return null;
     }
     _settings = setting;
